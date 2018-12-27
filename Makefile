@@ -1,7 +1,9 @@
 CC		= gcc
 CFLAGS	= -std=c++11 -Wall -Werror -Wextra
 
-SRCFILE	= piece.cpp\
+SRCFILE	= Board.cpp\
+		  piece.cpp\
+		  gen_partie.cpp
 
 SRCDIR	= .
 SRC		= $(addprefix $(SRCDIR)/,$(SRCFILE))
@@ -10,18 +12,27 @@ OBJDIR	= obj
 OBJFILE	= $(SRCFILE:.cpp=.o)
 OBJ		= $(addprefix $(OBJDIR)/,$(OBJFILE))
 
+LIBFILE	= libft.a
+LIBDIR	= libft
+LIB		= $(addprefix $(LIBDIR)/,$(LIBFILE))
 
 NAME	= Jeu_de_dames
 
-all : $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+all : $(OBJ) $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB)
 
-$(OBJDIR)/%.o : %.c
-		@/bin/mkdir $(OBJDIR) 2>/dev/null || true
+$(OBJDIR)/%.o : %.cpp | $(OBJDIR)
 		$(CC) $(CFLAGS) -o $@ -c $< -I $(HDR)
+
+$(OBJDIR) :
+		@/bin/mkdir $(OBJDIR) 2>/dev/null
+
+$(LIB) :
+	make -C $(LIBDIR)
 
 clean :
 	/bin/rm $(OBJ)
+	/bin/rm $(OBJDIR)
 
 fclean : clean
 	/bin/rm $(NAME)
