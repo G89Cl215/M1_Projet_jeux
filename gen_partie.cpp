@@ -1,27 +1,50 @@
 #include "piece.hpp"
+#include "Board.hpp"
+#include "gen_partie.hpp"
 
-GAME::GAME(e_variante game_type)
+GAME::GAME(char *game_type)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_GAME && g_setter[i][0] != game_type)
+	while (i < NB_GAME && ft_strcmp(g_setter[i].jeu, game_type))
 			i++;
-	this->board = new BOARD(g_setter[i][2]);
+	this->board = new BOARD(g_setter[i].board_size, g_setter[i].game_setup());
 	this->status = white_turn;
-	this->in_game = g_setter[i][1];
+	this->display_status();
+}
+
+
+void		GAME::display_status(void)
+{
+	std::cout << endl << "	*  " << this->status << endl;
+}
+
+
+void		GAME::change_turn(void)
+{
+	//en pseudo-code
+	if (this->status == white_turn)
+		this->status++;
+	if (this->status == black_turn)
+		this->status--;
+	this->display_status();
 }
 
 /* Initialisation de la liste chainee des differents types de pieces
  * possibles dans une partie de Dames
  */
 
-void	Dame_type_setup(t_type **list_start)
+void		Dame_type_setup(t_type **list_start)
 {
-	new t_type	*w_queen;
-	new t_type	*b_pawn;
-	new t_type	*b_queen;
+	t_type	*w_queen;
+	t_type	*b_pawn;
+	t_type	*b_queen;
 
+	*w_queen = new t_type;
+	*b_pawn = new t_type;
+	*b_queen = new t_type;
+	
 	(*list_start)->color = 1;
 	(*list_start)->move_verif = &pawn_move_legit;
 	(*list_start)->piece = 0;
@@ -55,7 +78,7 @@ void	Dame_type_setup(t_type **list_start)
  */
 
 
-int		*Dame_set_pos(int i)
+int			*Dame_set_pos(int i)
 {
 	new int		pos[2];
 
@@ -63,25 +86,25 @@ int		*Dame_set_pos(int i)
 	pos[1] = 2 * (i % 5) + (i / 10) % 2;
 	return (pos);
 }
-
-PIECE	*Dame_setup(void)
+//a revoir avec le nouveau systeme
+t_lst		**Dame_setup(void)
 {
-		t_type	*w_pawn;
-		PIECE	list[40];
-		int		i;
+	new t_type	*w_pawn;
+	t_lst		**list;
+	int			i;
 
-		i = 0;
-		Dame_type_setup(&w_pawn);
-		while (i < 20)
-		{
-			list[i] = new PIECE(w_pawn, Dame_set_pos(i));
-			i++;
-		}
-		w_pawn = (w_pawn->next)->next;
-		while (i < 40)
-		{
-			list[i] = new PIECE(w_pawn, Dame_set_pos(i));
-			i++;
-		}
-		return (list);
+	i = 0;
+	Dame_type_setup(&w_pawn);
+	while (i < 20)
+	{
+		list[i] = new PIECE(w_pawn, Dame_set_pos(i));
+		i++;
+	}
+	w_pawn = (w_pawn->next)->next;
+	while (i < 40)
+	{
+		list[i] = new PIECE(w_pawn, Dame_set_pos(i));
+		i++;
+	}
+	return (list);
 }

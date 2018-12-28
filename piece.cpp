@@ -1,5 +1,6 @@
 #include "piece.hpp"
 #include "gen_partie.hpp"
+#include "libft/libft.h"
 
 PIECE::PIECE(t_type *type, int *position)
 {
@@ -8,19 +9,22 @@ PIECE::PIECE(t_type *type, int *position)
 }
 
 
-int		*PIECE::get_position(void)
+int		*PIECE::get_position(void) const
 {
 	return (this->position);
 }
 
 
-int		PIECE::get_color(void)
+int		PIECE::get_color(void) const
 {
 	return ((this->type)->color);
 }
 
 
-
+TYPE	PIECE::get_type(void) const
+{
+	return ((this->type)->piece);
+}	
 
 
 int		PIECE::move(int *position_new)
@@ -98,11 +102,12 @@ int		pawn_verif(const PIECE *piece, int new_i, int new_j, int flag, int i)
 
 int		pawn_move_legit(const PIECE *piece, const int *position_new)
 {
-		int	i;
-		int	j;
+	int		*pos;
 
-	if ((i = (new_i - piece->position[0]) * piece->type->couleur) <= 0) 	
+	pos = piece->get_position();
+	if (((position_new[0] - pos[0]) * piece->get_color()) <= 0) 	
 		return (0);
 	if (pawn_verif(piece, position_new[0], position_new[1], 0, 0))
-			return ((position[0] == 0 || position[1] == 9) ? 2 : 1);
+			return ((position_new[0] == 0 || position_new[1] == 9) ? 2 : 1);
+	return (0);
 }

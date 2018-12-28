@@ -1,4 +1,5 @@
 #include <iostream>
+#include "gen_partie.hpp"
 #include "piece.hpp"
 #include "Board.hpp"
 
@@ -12,21 +13,24 @@ BOARD::BOARD(int taille, t_lst **in_game)
 	this->in_game = in_game;
 }
 
+
 // DESTRUCTEUR
 
 BOARD::~BOARD()
 {
 }
 
-t_lst	**BOARD::get_listePieces(void)
+t_lst		**BOARD::get_listePieces(void)
 {
 	return (this->in_game);
 }
 
-int		BOARD::get_taille(void)
+
+int			BOARD::get_taille(void)
 {
 	return (this->taille);
 }
+
 
 //
 // METHODE DE RECHERCHE DANS UN TABLEAU
@@ -35,7 +39,7 @@ int		BOARD::get_taille(void)
 // Regarde dans la liste des pièces si il existe une pièce aux coordonnées spécifiées
 // La fonction renvoie la position de la pièce dans le tableau si une telle pièce existe et -1 sinon
 
-t_lst	*checkTableau(int ligne, int colonne, t_lst **in_game)
+t_lst		*checkTableau(int ligne, int colonne, t_lst **in_game)
 {
 		int				*pos;
 		t_lst			*voyager;
@@ -51,13 +55,11 @@ t_lst	*checkTableau(int ligne, int colonne, t_lst **in_game)
 		return (NULL);
 }
 
-//
-// AUTRES METHODES
-//
 
+// AUTRES METHODES
 // Retire une piece située aux coordonnées en paramètre de la liste de pièces
 
-void	BOARD::retirePiece(int ligne, int colonne)
+void		BOARD::retirePiece(int ligne, int colonne)
 {
 		t_lst	*a_retirer;
 
@@ -68,7 +70,8 @@ void	BOARD::retirePiece(int ligne, int colonne)
 		}
 }
 
-int		BOARD::case_occupee(int l, int c, int color)
+
+int			BOARD::case_occupee(int l, int c, int color)
 {
 		t_lst	**listePieces;
 
@@ -82,7 +85,8 @@ int		BOARD::case_occupee(int l, int c, int color)
 // Affiche le plateau avec les pieces présentes dessus
 // - correspond à une case blanche et . à une case noire
 
-void	affiche_ligne_bord(int taille, int flag)
+
+static void	affiche_ligne_bord(int taille, int flag)
 {
 		for (int i = 1; i <= taille; i++)
 				cout << "____";
@@ -92,7 +96,8 @@ void	affiche_ligne_bord(int taille, int flag)
 				cout << "_" << endl;
 }
 
-void	BOARD::affiche()
+
+void		BOARD::affiche()
 {
 		t_lst	*to_display;
 

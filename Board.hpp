@@ -2,15 +2,7 @@
 # define BOARD_H
 
 # include <vector>
-
-class					PIECE;
-
-typedef struct			s_piecelst
-{
-	PIECE				*piece;
-	struct s_piecelst	*next;
-}						t_lst;
-
+# include "t_lst.hpp"
 
 class					BOARD
 {

@@ -1,61 +1,61 @@
 #ifndef GEN_GAME_HPP
 # define GEN_GAME_HPP
 
-# include "piece.hpp"
-# include "Board.hpp"
+# define NB_GAME 1 //definit le nombre possible jeux traites par notre constructeur de partie
 
-# define NB_GAME 1 //definit le nombre possible jeux traite par notre constructeur de partie
+# include <string>
+# include <iostream>
+# include "t_lst.hpp"
+# include "type_piece.hpp"
 
-class			PIECE;
-//class			BOARD;
+class			BOARD;
 
-PIECE			*Dame_setup(void);
-PIECE			*Echec_setup(void);
-PIECE			*Stratego_setup(void);
 
-PIECE			*Dame_setup(void);
+//t_lst			**Dame_setup(void);
+t_lst			**Echec_setup(void);
+t_lst			**Stratego_setup(void);
 
-enum			e_variante
-{
-	Dame,
-	Echec,
-	Stratego
-};
 
 typedef struct	s_Variante
 {
-	e_variante	jeu;
-	PIECE		*(*game_setup)(void);
-	int			board_size;
+	std::string			jeu;
+//	t_lst			**(*game_setup)(void);
+//	int				(*end_game)()
+	int				board_size;
 }				t_V;
+
 
 t_V				g_setter[] =
 {
-	{Dame, &Dame_setup, 10},
-/*	{Echec, &Echec_setup, 8},
-	{Stratego, &Stratego_setup, 10}*/
+	{"Dame", 10},
+/*	{"Echec", &Echec_setup, 8},
+	{"Stratego", &Stratego_setup, 10}*/
 };
 
-enum			TYPE
+
+enum			STATUS
 {
-	pawn,
-	queen,
-	knight,
-	bishop,
-	rook,
-	king
+	white_turn,
+	black_turn,
+	white_win,
+	black_win,
+	draw
 };
+
 
 class			GAME
 {
 	private :
-			t_lst	*in_game;
-			BOARD	board;
-			int		status;
+		BOARD	*board;
+		STATUS	status;
 	public :
-			GAME(e_variante game_type);
-			void	retirer_piece();
-			
+		GAME(char *game_type);
+		BOARD	*get_board(void) const;
+		STATUS	get_status(void) const;
+		void	display_status(void);
+		void	set_status(STATUS status);
+		void	change_turn(void);
+//		int		ft_parsing(std::sting str);
 };
 
 #endif
