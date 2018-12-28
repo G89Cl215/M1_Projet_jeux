@@ -2,12 +2,12 @@
 #include "Board.hpp"
 #include "gen_partie.hpp"
 
-GAME::GAME(char *game_type)
+GAME::GAME(std::string game_type)
 {
 	int		i;
 
 	i = 0;
-	while (i < NB_GAME && ft_strcmp(g_setter[i].jeu, game_type))
+	while (i < NB_GAME && game_type.compare(g_setter[i].jeu))
 			i++;
 	this->board = new BOARD(g_setter[i].board_size, g_setter[i].game_setup());
 	this->status = white_turn;

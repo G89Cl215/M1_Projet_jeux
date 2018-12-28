@@ -49,7 +49,7 @@ class			GAME
 		BOARD	*board;
 		STATUS	status;
 	public :
-		GAME(char *game_type);
+		GAME(std::string game_type);
 		BOARD	*get_board(void) const;
 		STATUS	get_status(void) const;
 		void	display_status(void);

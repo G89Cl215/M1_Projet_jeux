@@ -43,17 +43,14 @@ int		ft_isgame(std::string str)
 {
 }*/
 
-int		ft_parsing(std::string str)
+int		ft_parsing(std::string str, GAME *game)
 {
 	if (!(str.compare("Status")))
-		;
+		game-<display_status();
 	else if (!(str.compare("Help")) || !(str.compare("help")))
-		std::cout << "Les commandes disponibles sont :";
-	else
-	{
-		
-	}
-		
+		std::cout << "	*  Les commandes disponibles sont :" <<;
+	else if (!(game->parsing(str)))
+		return (0);
 	return (1);
 }
 
@@ -77,7 +74,7 @@ int		ft_message_fin(std::string str)
 int		main(void)
 {
 	std::string		str;
-//	GAME		*game;
+	GAME		*game;
 	
 	ft_init();
 	std::cin >> str;
@@ -88,7 +85,7 @@ int		main(void)
 		std::cout << "Ceci n'est pas un nom de jeu" << std::endl;
 		std::cin >> str;
 	}
-//	*game = new GAME(str);
+	*game = new GAME(str);
 	std::cin >> str;
 	while (!(ft_message_fin(str)))
    	{
