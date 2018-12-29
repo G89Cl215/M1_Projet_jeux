@@ -1,33 +1,31 @@
 #include "piece.hpp"
+#include "type.hpp"
 #include "gen_partie.hpp"
 #include "libft/libft.h"
 
-PIECE::PIECE(t_type *type, int *position)
-{
-	this->type = type;
-	this->position = position;
-}
+PIECE::PIECE(TYPE *type, int *position) : type(type), position(position)
+{}
 
 
-int		*PIECE::get_position(void) const
+int			*PIECE::get_position(void) const
 {
 	return (this->position);
 }
 
 
-int		PIECE::get_color(void) const
+int			PIECE::get_color(void) const
 {
-	return ((this->type)->color);
+	return ((this->type)->get_color());
 }
 
 
-TYPE	PIECE::get_type(void) const
+std::string	PIECE::get_type(void) const
 {
-	return ((this->type)->piece);
+	return ((this->type)->get_piece());
 }	
 
 
-int		PIECE::move(int *position_new)
+int			PIECE::move(int *position_new)
 {
 		int	j;
 
@@ -40,10 +38,10 @@ int		PIECE::move(int *position_new)
 }
 
 
-void	PIECE::transform(int i)
+void		PIECE::transform(int i)
 {
 	while (i--)
-		this->type = (this->type)->next;
+		this->set_type((this->type)->get_next());
 }
 
 

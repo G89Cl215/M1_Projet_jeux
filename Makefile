@@ -1,9 +1,12 @@
 CC		= gcc
 CFLAGS	= -std=c++11 -Wall -Werror -Wextra
 
-SRCFILE	= Board.cpp\
+SRCFILE	= type.cpp\
+		  maillon.cpp\
+		  main.cpp\
+		  Board.cpp\
+		  gen_partie.cpp\
 		  piece.cpp\
-		  gen_partie.cpp
 
 SRCDIR	= .
 SRC		= $(addprefix $(SRCDIR)/,$(SRCFILE))

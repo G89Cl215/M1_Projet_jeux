@@ -1,4 +1,6 @@
 #include "piece.hpp"
+#include "type.hpp"
+#include "maillon.hpp"
 #include "Board.hpp"
 #include "gen_partie.hpp"
 
@@ -17,7 +19,7 @@ GAME::GAME(std::string game_type)
 
 void		GAME::display_status(void)
 {
-	std::cout << endl << "	*  " << this->status << endl;
+	std::cout << std::endl << "	*  " << this->status << std::endl;
 }
 
 
@@ -35,39 +37,16 @@ void		GAME::change_turn(void)
  * possibles dans une partie de Dames
  */
 
-void		Dame_type_setup(t_type **list_start)
+static void	Dame_type_setup(TYPE **list_start)
 {
-	t_type	*w_queen;
-	t_type	*b_pawn;
-	t_type	*b_queen;
+	TYPE	*w_queen;
+	TYPE	*b_pawn;
+	TYPE	*b_queen;
 
-	*w_queen = new t_type;
-	*b_pawn = new t_type;
-	*b_queen = new t_type;
-	
-	(*list_start)->color = 1;
-	(*list_start)->move_verif = &pawn_move_legit;
-	(*list_start)->piece = 0;
-	(*list_start)->status = 0;
-	(*list_start)->next = w_queen;
-
-	w_queen->color = 1;
-	w_queen->move_verif = &queen_move_legit;
-	w_queen->piece = 1;
-	w_queen->status = 0;
-	w_queen->next = b_pawn;
-
-	b_pawn->color = -1;
-	b_pawn->move_verif = &pawn_move_legit;
-	b_pawn->piece = 0;
-	b_pawn->status = 0;
-	b_pawn->next = b_queen;
-
-	b_queen->color = -1;
-	b_queen->move_verif = &queen_move_legit;
-	b_queen->piece = 1;
-	b_queen->status = 0;
-	b_queen->next = NULL;
+	b_queen = new TYPE(&queen_move_legit, -1, "Q", 0);
+	b_pawn = new TYPE(&pawn_move_legit, -1, "O", b_queen);
+	w_queen = new TYPE(&queen_move_legit, 1, "Q", b_pawn);
+	*list_start = new TYPE(&pawn_move_legit, 1, "O", w_queen);
 }
 
 /*Attention, la fonction suivante utilise un codage logique des cases
@@ -78,33 +57,37 @@ void		Dame_type_setup(t_type **list_start)
  */
 
 
-int			*Dame_set_pos(int i)
+static int	*Dame_set_pos(int i)
 {
-	new int		pos[2];
+	int		*pos;
 
+	pos = new int[2];
 	pos[0] = i / 5 + 2 * (i / 20);
 	pos[1] = 2 * (i % 5) + (i / 10) % 2;
 	return (pos);
 }
 //a revoir avec le nouveau systeme
-t_lst		**Dame_setup(void)
+MAILLON		**Dame_setup(void)
 {
-	new t_type	*w_pawn;
-	t_lst		**list;
-	int			i;
+	TYPE	*w_pawn;
+	MAILLON	**list;
+	MAILLON	*cur_piece;
+	PIECE	*piece;
+	int		i;
 
-	i = 0;
+	i = 1;
 	Dame_type_setup(&w_pawn);
-	while (i < 20)
-	{
-		list[i] = new PIECE(w_pawn, Dame_set_pos(i));
-		i++;
-	}
-	w_pawn = (w_pawn->next)->next;
+	piece = new PIECE(w_pawn, Dame_set_pos(0));
+	list = new MAILLON*;
+	*list = new MAILLON(piece);
 	while (i < 40)
 	{
-		list[i] = new PIECE(w_pawn, Dame_set_pos(i));
+		piece = new PIECE(w_pawn, Dame_set_pos(i));
+		cur_piece = new MAILLON(piece);
+		pushback(list, cur_piece);
 		i++;
+		if (i == 20)
+			w_pawn = (w_pawn->get_next())->get_next();
 	}
 	return (list);
 }

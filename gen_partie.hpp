@@ -5,29 +5,26 @@
 
 # include <string>
 # include <iostream>
-# include "t_lst.hpp"
-# include "type_piece.hpp"
 
+class			MAILLON;
 class			BOARD;
 
-
-//t_lst			**Dame_setup(void);
-t_lst			**Echec_setup(void);
-t_lst			**Stratego_setup(void);
-
+MAILLON			**Dame_setup(void);
+MAILLON			**Echec_setup(void);
+MAILLON			**Stratego_setup(void);
 
 typedef struct	s_Variante
 {
-	std::string			jeu;
-//	t_lst			**(*game_setup)(void);
-//	int				(*end_game)()
-	int				board_size;
+	std::string	jeu;
+	MAILLON		**(*game_setup)(void);
+//	int			(*end_game)();
+	int			board_size;
 }				t_V;
 
 
 t_V				g_setter[] =
 {
-	{"Dame", 10},
+	{"Dame", &Dame_setup, 10},
 /*	{"Echec", &Echec_setup, 8},
 	{"Stratego", &Stratego_setup, 10}*/
 };
@@ -48,14 +45,16 @@ class			GAME
 	private :
 		BOARD	*board;
 		STATUS	status;
+		int		(move_parsing)(std::string str);
 	public :
 		GAME(std::string game_type);
+		~GAME();
 		BOARD	*get_board(void) const;
 		STATUS	get_status(void) const;
 		void	display_status(void);
 		void	set_status(STATUS status);
 		void	change_turn(void);
-//		int		ft_parsing(std::sting str);
+		int		parsing(std::string str);
 };
 
 #endif

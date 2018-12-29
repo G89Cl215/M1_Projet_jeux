@@ -1,9 +1,8 @@
 #include <string>
 #include <iostream>
 
-#include "libft/libft.h"
 #include "gen_partie.hpp"
-
+#include "Board.hpp"
 #define BUFFER_SIZE 50
 
 
@@ -15,6 +14,7 @@ void	ft_init(void)
 	std::cout << "	===          BIENVENUE            ===" << std::endl;
 	std::cout << "	*  Auteurs :  Thomas MORNARD,       *" << std::endl;
 	std::cout << "	*             Thomas GOUEDARD       *" << std::endl;
+	std::cout << "	*  La fabrique de jeu est prete,    *" << std::endl;
 	std::cout << "	*  Ce programme vous fera jouer     *" << std::endl;
 	std::cout << "	*  Les variantes supportees sont :  *" << std::endl;
 	while (i < NB_GAME)
@@ -46,10 +46,20 @@ int		ft_isgame(std::string str)
 int		ft_parsing(std::string str, GAME *game)
 {
 	if (!(str.compare("Status")))
-		game-<display_status();
+		game->display_status();
 	else if (!(str.compare("Help")) || !(str.compare("help")))
-		std::cout << "	*  Les commandes disponibles sont :" <<;
-	else if (!(game->parsing(str)))
+	{
+		std::cout << "	*  Les commandes disponibles sont :" << std::endl;
+		//liste des commandes
+	
+	}
+	else if (game->parsing(str))
+	{
+		game->change_turn();
+		(game->get_board())->affiche();
+		game->display_status();	
+	}
+	else
 		return (0);
 	return (1);
 }
@@ -74,7 +84,7 @@ int		ft_message_fin(std::string str)
 int		main(void)
 {
 	std::string		str;
-	GAME		*game;
+	GAME			*game;
 	
 	ft_init();
 	std::cin >> str;
@@ -85,11 +95,11 @@ int		main(void)
 		std::cout << "Ceci n'est pas un nom de jeu" << std::endl;
 		std::cin >> str;
 	}
-	*game = new GAME(str);
+	game = new GAME(str);
 	std::cin >> str;
 	while (!(ft_message_fin(str)))
    	{
-		if (!(ft_parsing(str)))
+		if (!(ft_parsing(str, game)))
 			std::cout << "Ce n'est pas un coup valide" <<std:: endl;
 		std::cin >> str;
 		
