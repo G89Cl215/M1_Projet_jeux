@@ -1,7 +1,8 @@
 CC		= gcc
 CFLAGS	= -std=c++11 -Wall -Werror -Wextra
 
-SRCFILE	= type.cpp\
+SRCFILE	= status.cpp\
+		  type.cpp\
 		  maillon.cpp\
 		  main.cpp\
 		  Board.cpp\

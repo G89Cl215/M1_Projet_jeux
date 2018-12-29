@@ -5,6 +5,7 @@
 
 # include <string>
 # include <iostream>
+# include "status.hpp"
 
 class			MAILLON;
 class			BOARD;
@@ -27,16 +28,6 @@ t_V				g_setter[] =
 	{"Dame", &Dame_setup, 10},
 /*	{"Echec", &Echec_setup, 8},
 	{"Stratego", &Stratego_setup, 10}*/
-};
-
-
-enum			STATUS
-{
-	white_turn,
-	black_turn,
-	white_win,
-	black_win,
-	draw
 };
 
 

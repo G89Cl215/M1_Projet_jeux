@@ -4,7 +4,7 @@
 #include "Board.hpp"
 #include "gen_partie.hpp"
 
-GAME::GAME(std::string game_type)
+GAME::GAME(std::string game_type) : status(STATUS::white_turn) 
 {
 	int		i;
 
@@ -12,7 +12,6 @@ GAME::GAME(std::string game_type)
 	while (i < NB_GAME && game_type.compare(g_setter[i].jeu))
 			i++;
 	this->board = new BOARD(g_setter[i].board_size, g_setter[i].game_setup());
-	this->status = white_turn;
 	this->display_status();
 }
 
@@ -23,13 +22,18 @@ void		GAME::display_status(void)
 }
 
 
+void		GAME::set_status(STATUS status)
+{
+	this->status = status;
+}
+
+
 void		GAME::change_turn(void)
 {
-	//en pseudo-code
-	if (this->status == white_turn)
-		this->status++;
-	if (this->status == black_turn)
-		this->status--;
+	if (this->status == STATUS::white_turn)
+		this->set_status(STATUS::black_turn);
+	else if (this->status == STATUS::black_turn)
+		this->set_status(STATUS::white_turn);
 	this->display_status();
 }
 
@@ -84,7 +88,7 @@ MAILLON		**Dame_setup(void)
 	{
 		piece = new PIECE(w_pawn, Dame_set_pos(i));
 		cur_piece = new MAILLON(piece);
-		pushback(list, cur_piece);
+		MAILLON::pushback(list, cur_piece);
 		i++;
 		if (i == 20)
 			w_pawn = (w_pawn->get_next())->get_next();

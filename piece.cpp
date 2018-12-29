@@ -1,7 +1,6 @@
 #include "piece.hpp"
 #include "type.hpp"
 #include "gen_partie.hpp"
-#include "libft/libft.h"
 
 PIECE::PIECE(TYPE *type, int *position) : type(type), position(position)
 {}
@@ -22,7 +21,7 @@ int			PIECE::get_color(void) const
 std::string	PIECE::get_type(void) const
 {
 	return ((this->type)->get_piece());
-}	
+}
 
 
 int			PIECE::move(int *position_new)
@@ -41,7 +40,7 @@ int			PIECE::move(int *position_new)
 void		PIECE::transform(int i)
 {
 	while (i--)
-		this->set_type((this->type)->get_next());
+		this->type = (this->type)->get_next();
 }
 
 
@@ -76,8 +75,12 @@ int		queen_move_legit(PIECE *piece, int *position_new)
 		return (0);
 }*/
 
+static int	ft_btw(int a, int b, int c)
+{
+	return ((!(a < b) || !(a > c)));
+}
 
-int		pawn_verif(const PIECE *piece, int new_i, int new_j, int flag, int i)
+static int	pawn_verif(const PIECE *piece, int new_i, int new_j, int flag, int i)
 {
 	int	*pos;
 
@@ -89,7 +92,7 @@ int		pawn_verif(const PIECE *piece, int new_i, int new_j, int flag, int i)
 		else
 			return (0);
 	}
-	if (!ft_btw(new_j, 0, 9) || flag ^ case_occupee(new_i, new_j, piece->get_color()))
+	if (!ft_btw(new_j, 0, 9) || flag ^ BOARD::case_occupee(new_i, new_j, piece->get_color()))
 		return (0);
 	new_i -= piece->get_color();
 	if (flag)

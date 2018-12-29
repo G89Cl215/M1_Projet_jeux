@@ -14,8 +14,7 @@ class	PIECE
 		PIECE(TYPE *type, int *position);
 		int			*get_position(void) const;
 		int			get_color(void) const;
-		//TYPE		*get_type(void) const;
-		std::string display_type(void);
+		std::string	get_type(void) const;
 		int			move(int *position);
 		void		transform(int n);
 		~PIECE();
