@@ -5,6 +5,8 @@
 #include "gen_partie.hpp"
 #include "g_setter.hpp"
 
+#include <iostream>
+
 t_V				g_setter[] =
 {
 	{"Dame", &Dame_setup, 10},
@@ -108,3 +110,8 @@ MAILLON		**Dame_setup(void)
 	}
 	return (list);
 }
+/*
+int			Dame_parsing()
+{
+	
+}*/

@@ -36,7 +36,6 @@ int		ft_isgame(std::string str)
 		i++;
 	if (i == NB_GAME)
 		return (0);
-	std::cout << "taille du plateau" << g_setter[i].board_size << std::endl;
 	return (1);
 }
 
@@ -48,18 +47,22 @@ int		ft_parsing(std::string str, GAME *game)
 {
 	if (!(str.compare("Status")))
 		game->display_status();
+	else if (!(str.compare("Historique")))
+		std::cout << "Historique" << std::endl;
+	else if (!(str.compare("Coups possibles")))
+		std::cout << "coups" << std::endl;
 	else if (!(str.compare("Help")) || !(str.compare("help")))
 	{
 		std::cout << "	*  Les commandes disponibles sont :" << std::endl;
 		//liste des commandes
 	
 	}
-	else if (game->parsing(str))
+/*	else if (game->parsing(str))
 	{
 		game->change_turn();
 		(game->get_board())->affiche();
 		game->display_status();	
-	}
+	}*/
 	else
 		return (0);
 	return (1);
@@ -67,18 +70,13 @@ int		ft_parsing(std::string str, GAME *game)
 
 int		ft_message_fin(std::string str)
 {
-	if (!(str.compare("resign")))
+	if (!(str.compare("resign")) || !(str.compare("quit")))
 	{
 
 //		g_game.ft_game_end();
-		return (1);
-	}
-	if (!(str.compare("quit")))
-	{
 		//liberation de toute memoire allouee
 		return (1);
 	}
-
 	return (0);
 }
 
@@ -97,6 +95,7 @@ int		main(void)
 		std::cin >> str;
 	}
 	game = new GAME(str);
+	(game->get_board())->affiche();
 	std::cin >> str;
 	while (!(ft_message_fin(str)))
    	{

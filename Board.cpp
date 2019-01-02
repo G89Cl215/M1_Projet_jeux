@@ -96,11 +96,11 @@ void		BOARD::affiche()
 	MAILLON	*to_display;
 
 	l = 0;
-	c = 0;
 	affiche_ligne_bord(this->get_taille(), 0);
-	while (l++ < this->get_taille())
+	while (l < this->get_taille())
 	{
-		while (c++ < this->get_taille())
+		c = 0;
+		while (c < this->get_taille())
 		{
 			cout << "| ";
 			if ((to_display = (*(this->get_listePieces()))->search(l, c)))
@@ -109,8 +109,10 @@ void		BOARD::affiche()
 				cout << "- ";
 			else
 				cout << ". ";
+			c++;
 		}
 		cout << "|" << endl;
+		l++;
 	}
 	affiche_ligne_bord(this->get_taille(), 1);
 }

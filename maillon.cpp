@@ -20,14 +20,14 @@ void			MAILLON::pushback(MAILLON **list_begin, MAILLON *new_back)
 {
 	MAILLON *voyager;
 
-		if (!list_begin)
+	if (!list_begin)
 		return ;
 	if (!(*list_begin))
 		*list_begin = new_back;
 	else
 	{
 		voyager = *list_begin;
-		while (voyager->get_piece())
+		while (voyager->get_next())
 			voyager = voyager->get_next();
 		voyager->set_next(new_back);
 	}
