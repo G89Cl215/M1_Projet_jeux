@@ -82,7 +82,7 @@ static int	*Dame_set_pos(int i)
 	int		*pos = new int[2];
 
 	pos[0] = i / 5 + 2 * (i / 20);
-	pos[1] = 2 * (i % 5) + (i / 10) % 2;
+	pos[1] = 2 * (i % 5) + (i / 5) % 2;
 	return (pos);
 }
 

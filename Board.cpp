@@ -75,17 +75,14 @@ int			BOARD::case_occupee(int l, int c, int color)
 // - correspond à une case blanche et . à une case noire
 
 
-static void	affiche_ligne_bord(int taille, int flag)
+static void	affiche_ligne_bord(int taille) 
 {
 	int i;
 
 	i = 0;
    	while (i++ < taille)
-		cout << "____";
-	if (flag)
-		cout << "|" << endl;
-	else
-		cout << "_" << endl;
+		cout << "+---";
+	cout << "+" << endl;
 }
 
 
@@ -96,7 +93,7 @@ void		BOARD::affiche()
 	MAILLON	*to_display;
 
 	l = 0;
-	affiche_ligne_bord(this->get_taille(), 0);
+	affiche_ligne_bord(this->get_taille());
 	while (l < this->get_taille())
 	{
 		c = 0;
@@ -108,11 +105,11 @@ void		BOARD::affiche()
 			else if (((l + c) % 2) == 0)
 				cout << "- ";
 			else
-				cout << ". ";
+				cout << "  ";
 			c++;
 		}
 		cout << "|" << endl;
 		l++;
+		affiche_ligne_bord(this->get_taille());
 	}
-	affiche_ligne_bord(this->get_taille(), 1);
 }
