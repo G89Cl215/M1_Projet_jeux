@@ -16,6 +16,28 @@ PIECE			*MAILLON::get_piece(void)
 		return (this->piece);
 }
 
+void			MAILLON::pushback(MAILLON **list_begin, MAILLON *new_back)
+{
+	MAILLON *voyager;
+
+		if (!list_begin)
+		return ;
+	if (!(*list_begin))
+		*list_begin = new_back;
+	else
+	{
+		voyager = *list_begin;
+		while (voyager->get_piece())
+			voyager = voyager->get_next();
+		voyager->set_next(new_back);
+	}
+}
+
+void			MAILLON::set_next(MAILLON *new_next)
+{
+	this->next = new_next;
+}
+
 MAILLON			*MAILLON::search(int l, int c)
 {
 	int				*pos;

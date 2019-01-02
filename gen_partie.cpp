@@ -3,6 +3,15 @@
 #include "maillon.hpp"
 #include "Board.hpp"
 #include "gen_partie.hpp"
+#include "g_setter.hpp"
+
+t_V				g_setter[] =
+{
+	{"Dame", &Dame_setup, 10},
+/*	{"Echec", &Echec_setup, 8},
+	{"Stratego", &Stratego_setup, 10}*/
+};
+
 
 GAME::GAME(std::string game_type) : status(STATUS::white_turn) 
 {
@@ -15,6 +24,11 @@ GAME::GAME(std::string game_type) : status(STATUS::white_turn)
 	this->display_status();
 }
 
+
+BOARD		*GAME::get_board(void) const
+{
+	return (this->board);
+}
 
 void		GAME::display_status(void)
 {
@@ -63,14 +77,13 @@ static void	Dame_type_setup(TYPE **list_start)
 
 static int	*Dame_set_pos(int i)
 {
-	int		*pos;
+	int		*pos = new int[2];
 
-	pos = new int[2];
 	pos[0] = i / 5 + 2 * (i / 20);
 	pos[1] = 2 * (i % 5) + (i / 10) % 2;
 	return (pos);
 }
-//a revoir avec le nouveau systeme
+
 MAILLON		**Dame_setup(void)
 {
 	TYPE	*w_pawn;

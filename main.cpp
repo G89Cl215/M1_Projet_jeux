@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "gen_partie.hpp"
+#include "g_setter.hpp"
 #include "Board.hpp"
 #define BUFFER_SIZE 50
 

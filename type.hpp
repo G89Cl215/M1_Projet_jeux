@@ -4,18 +4,19 @@
 #include <string>
 
 class		PIECE;
+class		BOARD;
 
 class		TYPE
 {
 	private :
-		int			(*move_verif)(const PIECE *piece, const int *position);
 		int			color;
 		std::string	piece;
 		int			status;
 		TYPE		*next;
 	public :
-		TYPE(int (*move_verif)(const PIECE *piece, const int *pos),
+		TYPE(int (*move_verif)(BOARD *board, PIECE *piece, int *pos),
 					   int color, std::string piece, TYPE *next);
+		int			(*move_verif)(BOARD *board, PIECE *piece, int *position);
 		TYPE		*get_next(void);
 		std::string	get_piece(void);
 		int			get_status(void);

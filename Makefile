@@ -1,4 +1,4 @@
-CC		= gcc
+CC		= g++
 CFLAGS	= -std=c++11 -Wall -Werror -Wextra
 
 SRCFILE	= status.cpp\
@@ -16,29 +16,22 @@ OBJDIR	= obj
 OBJFILE	= $(SRCFILE:.cpp=.o)
 OBJ		= $(addprefix $(OBJDIR)/,$(OBJFILE))
 
-LIBFILE	= libft.a
-LIBDIR	= libft
-LIB		= $(addprefix $(LIBDIR)/,$(LIBFILE))
-
 NAME	= Jeu_de_dames
 
-all : $(OBJ) $(LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB)
+all : $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
 $(OBJDIR)/%.o : %.cpp | $(OBJDIR)
 		$(CC) $(CFLAGS) -o $@ -c $< -I $(HDR)
 
 $(OBJDIR) :
-		@/bin/mkdir $(OBJDIR) 2>/dev/null
-
-$(LIB) :
-	make -C $(LIBDIR)
+	@/bin/mkdir $(OBJDIR) 2>/dev/null
 
 clean :
-	/bin/rm $(OBJ)
-	/bin/rm $(OBJDIR)
+	@/bin/rm $(OBJ) || true
+	@/bin/rm $(OBJDIR) || true
 
 fclean : clean
-	/bin/rm $(NAME)
+	/bin/rm $(NAME) || true
 
 re : fclean all

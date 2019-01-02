@@ -1,35 +1,11 @@
 #ifndef GEN_GAME_HPP
 # define GEN_GAME_HPP
 
-# define NB_GAME 1 //definit le nombre possible jeux traites par notre constructeur de partie
-
 # include <string>
 # include <iostream>
 # include "status.hpp"
 
-class			MAILLON;
 class			BOARD;
-
-MAILLON			**Dame_setup(void);
-MAILLON			**Echec_setup(void);
-MAILLON			**Stratego_setup(void);
-
-typedef struct	s_Variante
-{
-	std::string	jeu;
-	MAILLON		**(*game_setup)(void);
-//	int			(*end_game)();
-	int			board_size;
-}				t_V;
-
-
-t_V				g_setter[] =
-{
-	{"Dame", &Dame_setup, 10},
-/*	{"Echec", &Echec_setup, 8},
-	{"Stratego", &Stratego_setup, 10}*/
-};
-
 
 class			GAME
 {

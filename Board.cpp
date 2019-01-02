@@ -1,5 +1,6 @@
 #include <iostream>
 #include "gen_partie.hpp"
+#include "type.hpp"
 #include "piece.hpp"
 #include "maillon.hpp"
 #include "Board.hpp"
@@ -41,6 +42,22 @@ void		BOARD::retirePiece(int l, int c)
 		delete(a_retirer->get_piece());
 		a_retirer = a_retirer->get_next();
 	}
+}
+
+
+int			BOARD::move(int *square, int *position_new)
+{
+		int		j;
+		PIECE	*to_move;
+
+		to_move = ((*(this->in_game))->search(*square, square[1]))->get_piece();
+		j = (to_move->get_type())->move_verif(this, to_move, position_new);
+		if (j != 0)
+				to_move->set_position(position_new);
+		if (j == 2)
+				//demander a lutilisateur la transfo. 1 pour les dames.
+				to_move->transform(1);
+		return (j);
 }
 
 

@@ -4,6 +4,7 @@
 # include <string>
 
 class	TYPE;
+class	BOARD;
 
 class	PIECE
 {
@@ -14,13 +15,14 @@ class	PIECE
 		PIECE(TYPE *type, int *position);
 		int			*get_position(void) const;
 		int			get_color(void) const;
-		std::string	get_type(void) const;
-		int			move(int *position);
+		TYPE		*get_type(void) const;
+		std::string	display_type(void) const;
+		void		set_position(int *position_new);
 		void		transform(int n);
 		~PIECE();
 };
 
-int		pawn_move_legit(const PIECE *piece, const int *position_new);
-int		queen_move_legit(const PIECE *piece, const int *position_new);
+int		pawn_move_legit(BOARD *board, PIECE *piece, int *position_new);
+int		queen_move_legit(BOARD *board, PIECE *piece, int *position_new);
 
 #endif
