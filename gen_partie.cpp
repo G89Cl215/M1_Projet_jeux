@@ -110,8 +110,9 @@ MAILLON		**Dame_setup(void)
 	}
 	return (list);
 }
-/*
+
+
 int			Dame_parsing()
 {
 	
-}*/
+}

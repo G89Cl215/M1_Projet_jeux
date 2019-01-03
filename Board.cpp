@@ -101,7 +101,7 @@ void		BOARD::affiche()
 		{
 			cout << "| ";
 			if ((to_display = (*(this->get_listePieces()))->search(l, c)))
-				cout << (to_display->get_piece())->display_type() << " ";
+				cout << (to_display->get_piece())->display_piece() << " ";
 			else if (((l + c) % 2) == 0)
 				cout << "- ";
 			else

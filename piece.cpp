@@ -24,9 +24,20 @@ TYPE		*PIECE::get_type(void) const
 	return (this->type);
 }
 
-std::string	PIECE::display_type(void) const
+std::string	PIECE::color_code(void) const
 {
-	return ((this->type)->get_piece());
+	return (this->get_color() == 1 ? "33" : "31");
+}
+
+std::string	PIECE::display_piece(void) const
+{
+	std::string		str {"\033["};
+			
+	str.append(this->color_code());
+	str.append("m");
+	str.append((this->type)->get_piece());
+	str.append("\033[0m");
+	return (str);
 }
 
 

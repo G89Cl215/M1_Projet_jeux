@@ -20,8 +20,8 @@ void	ft_init(void)
 	std::cout << "	*  Les variantes supportees sont :  *" << std::endl;
 	while (i < NB_GAME)
 	{
-	std::cout <<"	*       " << g_setter[i].jeu << std::endl;
-	i++;
+		std::cout <<"	*       " << g_setter[i].jeu << std::endl;
+		i++;
 	}
 	std::cout << "	===                               ===" << std::endl;
 }
@@ -74,7 +74,7 @@ int		ft_message_fin(std::string str)
 	{
 
 //		g_game.ft_game_end();
-		//liberation de toute memoire allouee
+//		liberation de toute memoire allouee
 		return (1);
 	}
 	return (0);
@@ -100,11 +100,8 @@ int		main(void)
 	while (!(ft_message_fin(str)))
    	{
 		if (!(ft_parsing(str, game)))
-			std::cout << "Ce n'est pas un coup valide" <<std:: endl;
+			std::cout << "Ce n'est pas un coup valide" << std::endl;
 		std::cin >> str;
-		
-	
-	
 	}
 	return (0);
 }

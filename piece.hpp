@@ -16,7 +16,8 @@ class	PIECE
 		int			*get_position(void) const;
 		int			get_color(void) const;
 		TYPE		*get_type(void) const;
-		std::string	display_type(void) const;
+		std::string	color_code(void) const;
+		std::string	display_piece(void) const;
 		void		set_position(int *position_new);
 		void		transform(int n);
 		~PIECE();
