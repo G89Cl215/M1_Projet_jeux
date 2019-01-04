@@ -12,7 +12,7 @@ class			GAME
 	private :
 		BOARD	*board;
 		STATUS	status;
-		int		(move_parsing)(std::string str);
+//		int		(move_parsing)(std::string str);
 	public :
 		GAME(std::string game_type);
 		~GAME();

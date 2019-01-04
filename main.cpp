@@ -4,7 +4,6 @@
 #include "gen_partie.hpp"
 #include "g_setter.hpp"
 #include "Board.hpp"
-#define BUFFER_SIZE 50
 
 
 void	ft_init(void)
@@ -57,12 +56,11 @@ int		ft_parsing(std::string str, GAME *game)
 		//liste des commandes
 	
 	}
-/*	else if (game->parsing(str))
+	else if (game->parsing(str))
 	{
 		game->change_turn();
 		(game->get_board())->affiche();
-		game->display_status();	
-	}*/
+	}
 	else
 		return (0);
 	return (1);

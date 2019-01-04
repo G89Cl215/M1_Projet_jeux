@@ -45,28 +45,43 @@ void		BOARD::retirePiece(int l, int c)
 }
 
 
-int			BOARD::move(int *square, int *position_new)
+int			BOARD::move(MAILLON *to_move, int *new_position)
 {
-		int		j;
-		PIECE	*to_move;
+	int		j;
+	PIECE	*piece {to_move->get_piece()};
 
-		to_move = ((*(this->in_game))->search(*square, square[1]))->get_piece();
-		j = (to_move->get_type())->move_verif(this, to_move, position_new);
-		if (j != 0)
-				to_move->set_position(position_new);
-		if (j == 2)
-				//demander a lutilisateur la transfo. 1 pour les dames.
-				to_move->transform(1);
-		return (j);
+	j = (piece->get_type())->move_verif(this, piece, new_position);
+	if (j != 0)
+		piece->set_position(new_position);
+	if (j == 2)
+		//demander a lutilisateur la transfo. 1 pour les dames.
+		piece->transform(1);
+	return (j);
 }
 
 
-int			BOARD::case_occupee(int l, int c, int color)
+MAILLON		*BOARD::case_occupee(int l, int c)
+{
+	return ((*(this->get_listePieces()))->search(l, c));
+}
+
+
+int			BOARD::can_take(int l, int c, int color)
 {
 	MAILLON *found;
 
-	if (((found = (*(this->get_listePieces()))->search(l, c))) 
+	if ((found = this->case_occupee(l, c))
 					&& (((found)->get_piece())->get_color() == (-1) * color))
+		return (1);
+	return (0);
+}
+
+int			BOARD::can_play(int l, int c, int color)
+{
+	MAILLON *found;
+
+	if ((found = this->case_occupee(l, c))
+					&& (((found)->get_piece())->get_color() == color))
 		return (1);
 	return (0);
 }
@@ -80,11 +95,24 @@ static void	affiche_ligne_bord(int taille)
 	int i;
 
 	i = 0;
+	cout << "  --	";	
    	while (i++ < taille)
 		cout << "+---";
 	cout << "+" << endl;
 }
 
+static void	affiche_echelle(int taille) 
+{
+	char	i;
+
+	i = 'a';
+	cout << endl;
+	cout << "	| ";
+	while (i < 'a' + taille)
+		cout << i++ << " | ";
+	cout << endl;
+	cout << endl;
+}
 
 void		BOARD::affiche()
 {
@@ -93,13 +121,15 @@ void		BOARD::affiche()
 	MAILLON	*to_display;
 
 	l = 0;
+	affiche_echelle(this->get_taille());
 	affiche_ligne_bord(this->get_taille());
 	while (l < this->get_taille())
 	{
 		c = 0;
+		cout <<"  " << l + 1 << "	"; 
 		while (c < this->get_taille())
 		{
-			cout << "| ";
+			cout<< "| ";
 			if ((to_display = (*(this->get_listePieces()))->search(l, c)))
 				cout << (to_display->get_piece())->display_piece() << " ";
 			else if (((l + c) % 2) == 0)

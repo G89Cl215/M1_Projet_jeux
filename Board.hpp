@@ -13,8 +13,10 @@ class					BOARD
 		MAILLON			**get_listePieces(void);
 		int				get_taille(void);
 		void			retirePiece(int l, int c);
-		int				move(int *square, int *position_new);
-		int				case_occupee(int l, int c, int color);
+		int				move(MAILLON *to_move, int *new_position);
+		int				can_take(int l, int c, int color);
+		int				can_play(int l, int c, int color);
+		MAILLON			*case_occupee(int l, int c);
 		void			affiche();
 		~BOARD();
 };

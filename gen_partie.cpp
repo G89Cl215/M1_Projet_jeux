@@ -7,6 +7,11 @@
 
 #include <iostream>
 
+static int	ft_btw(int a, int b, int c)
+{
+	return ((!(a < b) || !(a > c)));
+}
+
 t_V				g_setter[] =
 {
 	{"Dame", &Dame_setup, 10},
@@ -21,7 +26,7 @@ GAME::GAME(std::string game_type) : status(STATUS::white_turn)
 
 	i = 0;
 	while (i < NB_GAME && game_type.compare(g_setter[i].jeu))
-			i++;
+		i++;
 	this->board = new BOARD(g_setter[i].board_size, g_setter[i].game_setup());
 	this->display_status();
 }
@@ -111,8 +116,37 @@ MAILLON		**Dame_setup(void)
 	return (list);
 }
 
-
-int			Dame_parsing()
+int			GAME::parsing(std::string str)
 {
-	
+	MAILLON	*to_move;
+	int		i {0};
+	int		new_pos[2];
+	int		color;
+
+	color = (this->status == STATUS::white_turn ? 1 : -1);
+	if (ft_btw(str[i] - 'a', 0, (this->board)->get_taille() - 1))
+	{
+		new_pos[1] = str[i++] - 'a';
+		if (ft_btw(str[i] - '0', 1, (this->board)->get_taille()))
+		{
+			new_pos[0] = str[i++] - '1';
+			if (this->board->can_play(new_pos[0], new_pos[1], color))
+			{
+				to_move = this->board->case_occupee(new_pos[0], new_pos[1]);
+				if (str[i++] != '-')
+					return (0);
+				if (ft_btw(str[i] - 'a', 0, (this->board)->get_taille() - 1))
+				{
+					new_pos[1]  = str[i++] - 'a';
+					if (ft_btw(str[i] - '0', 1, (this->board)->get_taille()))
+					{
+						new_pos[0]  = str[i++] - '1';
+						if ((this->get_board())->move(to_move, new_pos))
+							return (1);
+					}
+				}
+			}
+		}
+	}
+	return(0);
 }
