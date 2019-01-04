@@ -116,13 +116,12 @@ static void	affiche_echelle(int taille)
 void		BOARD::affiche()
 {
 	int		c;
-	int		l;
+	int		l {this ->get_taille()};
 	MAILLON	*to_display;
 
-	l = 0;
 	affiche_echelle(this->get_taille());
 	affiche_ligne_bord(this->get_taille());
-	while (l < this->get_taille())
+	while (l-- > 0)
 	{
 		c = 0;
 		cout <<"  " << l + 1 << "	"; 
@@ -138,7 +137,6 @@ void		BOARD::affiche()
 			c++;
 		}
 		cout << "|" << endl;
-		l++;
 		affiche_ligne_bord(this->get_taille());
 	}
 	cout << endl;

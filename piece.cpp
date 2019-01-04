@@ -4,7 +4,18 @@
 #include "gen_partie.hpp"
 
 PIECE::PIECE(TYPE *type, int *position) : type(type), position(position)
-{}
+{
+}
+
+
+PIECE::PIECE(TYPE *type, std::vector<int> position) : type(type)
+{
+	int	*pos = new int[2];
+
+	pos[0] = position[0];
+	pos[1] = position[1];
+	this->position = pos;
+}
 
 
 int			*PIECE::get_position(void) const
@@ -41,11 +52,34 @@ std::string	PIECE::display_piece(void) const
 }
 
 
+void	PIECE::set_legit(std::vector<std::vector<int>> list)
+{
+	(this->possible_moves).clear();
+	this->possible_moves = list;
+}
+
+
+int		PIECE::is_legit(int *pos)
+{
+	std::vector<std::vector<int>>			moves {this->possible_moves};
+	std::vector<std::vector<int>>::iterator	it {moves.begin()};
+
+	while (it < moves.end())
+	{
+		if (pos[0] == (*it)[0] && pos[1] == (*it)[1])
+			return (1);
+		it++;
+	}
+	return (0);
+}
+
+
 void		PIECE::set_position(int *position_new)
 {
 	this->position[0] = position_new[0];
 	this->position[1] = position_new[1];
 }
+
 
 PIECE::~PIECE()
 {
@@ -78,6 +112,27 @@ int		queen_verif(const PIECE *piece, int new_i, int new_j, int flag, int i)
 	return (pawn_verif(piece, new_i + 1, new_j - 1, 1, - 1) || pawn_verif(piece, new_i + , new_j + 1, 1, 1));
 }
 */
+
+void	Dame_queen_update_move(MAILLON *BOARD, PIECE *piece, int *new_position)
+{
+	std::vector<std::vector<int>>	list;
+	int					*pos {piece->get_position()};
+
+	queen_verif()
+	if (!(prise_dame(pos)))
+		while ()
+
+
+
+
+
+
+
+
+	piece->set_legit(list)
+}
+
+
 int		queen_move_legit(BOARD *board, PIECE *piece, int *position_new)
 {
 		(void)board;
@@ -115,6 +170,24 @@ static int	pawn_verif(BOARD *board, PIECE *piece, int new_i, int new_j, int flag
 }
 
 
+void	Dame_pawn_update_move(MAILLON *BOARD, PIECE *piece)
+{
+	std::vector< std::vector<int> >	list;
+	int					*pos {piece->get_position()};
+	static int			take_power {0};
+
+
+	if (!(board->pawn_take(pos[0], pos[1])))
+	{
+		for (int i : {-1, 1})
+		{
+			if (!(board->case_occupee(pos[0] + piece->get_color(), pos[1] + i)))
+				list.push_back({pos[0] + piece->get_color(), pos[1] + i, take_power});
+		}
+	}
+
+}
+
 int		pawn_move_legit(BOARD *board, PIECE *piece, int *position_new)
 {
 	int		*pos;
@@ -125,4 +198,28 @@ int		pawn_move_legit(BOARD *board, PIECE *piece, int *position_new)
 	if (pawn_verif(board, piece, position_new[0], position_new[1], 0, 0))
 			return ((position_new[0] == 0 || position_new[1] == 9) ? 2 : 1);
 	return (0);
+}
+
+
+void Fou::updateCoupsPossibles()
+{
+	int distance {1};
+
+	for(int i : {-1,1})
+	{
+		for(int j : {-1,1})
+		{
+			while (plateau.estDansPlateau(colonne+i*distance,ligne+j*distance)
+				&& plateau.caseOccupee(colonne+i*distance,ligne+j*distance) != couleur)
+			{
+				coupsPossibles.push_back({colonne+i*distance,ligne+j*distance});
+				if(plateau.caseOccupee(colonne+i*distance,ligne+j*distance) == -couleur)
+				{
+					break;
+				}
+				distance++;
+			}
+			distance = 1;
+		}
+	}
 }
