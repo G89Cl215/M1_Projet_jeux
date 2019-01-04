@@ -110,8 +110,7 @@ static void	affiche_echelle(int taille)
 	cout << "	| ";
 	while (i < 'a' + taille)
 		cout << i++ << " | ";
-	cout << endl;
-	cout << endl;
+	cout << endl << endl;
 }
 
 void		BOARD::affiche()
@@ -142,4 +141,5 @@ void		BOARD::affiche()
 		l++;
 		affiche_ligne_bord(this->get_taille());
 	}
+	cout << endl;
 }

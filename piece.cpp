@@ -104,7 +104,8 @@ static int	pawn_verif(BOARD *board, PIECE *piece, int new_i, int new_j, int flag
 			return (0);
 	}
 	if (!ft_btw(new_j, 0, board->get_taille() - 1)
-					|| flag ^ board->can_take(new_i, new_j, piece->get_color()))
+					|| flag ^ board->can_take(new_i, new_j, piece->get_color())
+					|| (!(flag) && (board->case_occupee(new_i, new_j))))
 		return (0);
 	new_i -= piece->get_color();
 	if (flag)
