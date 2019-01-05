@@ -30,7 +30,7 @@ $(OBJDIR) :
 
 clean :
 	@/bin/rm $(OBJ) || true
-	@/bin/rm $(OBJDIR) || true
+	@/bin/rm -R $(OBJDIR) || true
 
 fclean : clean
 	/bin/rm $(NAME) || true
