@@ -17,6 +17,7 @@ BOARD::BOARD(int taille, MAILLON **in_game) : taille(taille), in_game(in_game)
 
 BOARD::~BOARD()
 {
+	MAILLON::list_del(in_game);
 }
 
 MAILLON		**BOARD::get_listePieces(void)
@@ -33,36 +34,23 @@ int			BOARD::get_taille(void)
 // AUTRES METHODES
 // Retire une piece située aux coordonnées en paramètre de la liste de pièces
 
-void		BOARD::retirePiece(int l, int c)
+void		BOARD::remove(int *pos)
 {
 	MAILLON	*a_retirer;
 
-	if ((a_retirer = (*(this->get_listePieces()))-> search(l, c)))
+	std::cout << "hello" << std::endl;
+	if ((a_retirer = (*(this->in_game))->search(pos[0], pos[1])))
 	{
-		delete(a_retirer->get_piece());
-		a_retirer = a_retirer->get_next();
+		std::cout << "world" << std::endl;
+		delete (a_retirer->get_piece());
+		*a_retirer = *(a_retirer->get_next());
 	}
-}
-
-
-int			BOARD::move(MAILLON *to_move, int *new_position)
-{
-	int		j;
-	PIECE	*piece {to_move->get_piece()};
-
-	j = (piece->get_type())->move_verif(this, piece, new_position);
-	if (j != 0)
-		piece->set_position(new_position);
-	if (j == 2)
-		//demander a lutilisateur la transfo. 1 pour les dames.
-		piece->transform(1);
-	return (j);
 }
 
 
 MAILLON		*BOARD::case_occupee(int l, int c)
 {
-	return ((*(this->get_listePieces()))->search(l, c));
+	return ((*(this->in_game))->search(l, c));
 }
 
 
@@ -71,21 +59,30 @@ int			BOARD::can_take(int l, int c, int color)
 	MAILLON *found;
 
 	if ((found = this->case_occupee(l, c))
-					&& (((found)->get_piece())->get_color() == (-1) * color))
+				&& (((found)->get_piece())->get_color() == (-1) * color))
 		return (1);
 	return (0);
 }
+
 
 int			BOARD::can_play(int l, int c, int color)
 {
 	MAILLON *found;
 
 	if ((found = this->case_occupee(l, c))
-					&& (((found)->get_piece())->get_color() == color))
-		return (1);
-	return (0);
+				&& (((found)->get_piece())->get_color() == color))
+		return (0);
+	return (1);
 }
 
+int			BOARD::in_board(int l, int c)
+{
+	return ((l < this->taille && l >= 0) && (c < this->taille && c >= 0));
+}
+
+
+//	=>	AFFICHAGE  <=
+//
 // Affiche le plateau avec les pieces présentes dessus
 // - correspond à une case blanche et . à une case noire
 

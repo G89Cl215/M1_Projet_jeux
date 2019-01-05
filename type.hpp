@@ -11,16 +11,14 @@ class		TYPE
 	private :
 		int			color;
 		std::string	piece;
-		int			status;
 		TYPE		*next;
 	public :
-		TYPE(int (*move_verif)(BOARD *board, PIECE *piece, int *pos),
+		TYPE(void (*moves)(BOARD *board, PIECE *piece),
 					   int color, std::string piece, TYPE *next);
-		int			(*move_verif)(BOARD *board, PIECE *piece, int *position);
-		TYPE		*get_next(void);
-		std::string	get_piece(void);
-		int			get_status(void);
-		int			get_color(void);
+		void		(*moves)(BOARD *board, PIECE *piece);
+		TYPE		*get_next();
+		std::string	get_piece();
+		int			get_color();
 		~TYPE();
 		
 };

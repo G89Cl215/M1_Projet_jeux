@@ -1,26 +1,21 @@
 #include "type.hpp"
 
-TYPE::TYPE(int (*move_verif)(BOARD *board, PIECE *piece, int *pos),
+TYPE::TYPE(void (*moves)(BOARD *board, PIECE *piece),
 					   int color, std::string piece, TYPE *next) :
-		color(color), piece(piece), status(0), next(next), move_verif(move_verif)
+		color(color), piece(piece), next(next), moves(moves)
 {}
 
-TYPE		*TYPE::get_next(void)
+TYPE		*TYPE::get_next()
 {
 	return (this->next);
 }
 
-std::string	TYPE::get_piece(void)
+std::string	TYPE::get_piece()
 {
 	return (this->piece);
 }
 
-int			TYPE::get_status(void)
-{
-	return (this->status);
-}
-
-int			TYPE::get_color(void)
+int			TYPE::get_color()
 {
 	return (this->color);
 }

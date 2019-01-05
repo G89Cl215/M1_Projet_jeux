@@ -8,6 +8,7 @@ SRCFILE	= status.cpp\
 		  Board.cpp\
 		  gen_partie.cpp\
 		  piece.cpp\
+		  piece_echec.cpp\
 
 SRCDIR	= .
 SRC		= $(addprefix $(SRCDIR)/,$(SRCFILE))

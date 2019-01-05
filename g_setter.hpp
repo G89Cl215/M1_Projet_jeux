@@ -1,7 +1,7 @@
 #ifndef G_SETTER_H
 # define G_SETTER_H
 
-constexpr int NB_GAME = 1; //definit le nombre possible jeux traites par notre constructeur de partie
+constexpr int NB_GAME = 2; //definit le nombre possible jeux traites par notre constructeur de partie
 
 class			MAILLON;
 

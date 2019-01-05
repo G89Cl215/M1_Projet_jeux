@@ -12,25 +12,36 @@ class	PIECE
 	private :
 		TYPE							*type;
 		int								*position;
+		int								status;
 		std::vector<std::vector<int>>	possible_moves;
 	public :
 		PIECE(TYPE *type, int *position);
 		PIECE(TYPE *type, std::vector<int> position); 
-		int			*get_position(void) const;
-		int			get_color(void) const;
-		TYPE		*get_type(void) const;
-		std::string	color_code(void) const;
-		std::string	display_piece(void) const;
-		void		set_legit(std::vector<std::vector<int>> list);
-		int			is_legit(int *new_pos);
-		void		set_position(int *position_new);
-		void		transform(int n);
+		int								*get_position() const;
+		int								get_status() const;
+		int								get_color() const;
+		TYPE							*get_type() const;
+		std::string						color_code() const;
+		std::string						display_piece() const;
+		std::vector<std::vector<int>>	get_moves() const;
+		void							display_moves();
+		void							set_legit(std::vector<std::vector<int>> list);
+		int								is_legit(int *new_pos);
+		void							set_position(int *position_new);
+		void							set_status(int new_status);
+		void							transform(int n);
 		~PIECE();
 };
 
-int		pawn_move_legit(BOARD *board, PIECE *piece, int *position_new);
-int		queen_move_legit(BOARD *board, PIECE *piece, int *position_new);
+void	Dame_pawn_move(BOARD *board, PIECE *piece);
+void	Dame_queen_move(BOARD *board, PIECE *piece);
+
+void	Echec_pawn_move(BOARD *board, PIECE *piece);
+void	Echec_queen_move(BOARD *board, PIECE *piece);
+void	Echec_king_move(BOARD *board, PIECE *piece);
+void	rook_move(BOARD *board, PIECE *piece);
+void	bishop_move(BOARD *board, PIECE *piece);
+void	knight_move(BOARD *board, PIECE *piece);
+
 
 #endif
-
-

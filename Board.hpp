@@ -12,11 +12,11 @@ class					BOARD
 		BOARD(int taille, MAILLON **in_game);
 		MAILLON			**get_listePieces(void);
 		int				get_taille(void);
-		void			retirePiece(int l, int c);
-		int				move(MAILLON *to_move, int *new_position);
+		void			remove(int *pos);
 		int				can_take(int l, int c, int color);
 		int				can_play(int l, int c, int color);
 		MAILLON			*case_occupee(int l, int c);
+		int				in_board(int l, int c);
 		void			affiche();
 		~BOARD();
 };

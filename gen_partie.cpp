@@ -8,27 +8,23 @@
 #include <iostream>
 #include <vector>
 
-static int	ft_btw(int a, int b, int c)
-{
-	return ((!(a < b) || !(a > c)));
-}
 
 t_V				g_setter[] =
 {
 	{"Dame", &Dame_setup, 10},
-/*	{"Echec", &Echec_setup, 8},
-	{"Stratego", &Stratego_setup, 10}*/
+	{"Echec", &Echec_setup, 8},
+	/*{"Stratego", &Stratego_setup, 10}*/
 };
 
 
 GAME::GAME(std::string game_type) : status(STATUS::white_turn) 
 {
-	int		i;
+	int		i {0};
 
-	i = 0;
 	while (i < NB_GAME && game_type.compare(g_setter[i].jeu))
 		i++;
 	this->board = new BOARD(g_setter[i].board_size, g_setter[i].game_setup());
+	this->update_moves();
 	this->display_status();
 }
 
@@ -36,6 +32,12 @@ GAME::GAME(std::string game_type) : status(STATUS::white_turn)
 BOARD		*GAME::get_board(void) const
 {
 	return (this->board);
+}
+
+
+STATUS		GAME::get_status() const
+{
+	return (this->status);
 }
 
 void		GAME::display_status(void)
@@ -62,38 +64,81 @@ void		GAME::change_turn(void)
 
 int			GAME::parsing(std::string str)
 {
-	MAILLON	*to_move;
-	int		i {0};
-	int		new_pos[2];
-	int		color;
+	MAILLON			*to_move;
+	std::size_t		i			{0};
+	int				new_pos[2];
+	int				color		{this->status == STATUS::white_turn ? 1 : -1};
 
-	color = (this->status == STATUS::white_turn ? 1 : -1);
-	if (ft_btw(str[i] - 'a', 0, (this->board)->get_taille() - 1))
+	new_pos[1] = str[i++] - 'a';
+	new_pos[0] = atoi(str.substr(i).c_str()) - 1;
+	i += (new_pos[0] > 9 ? 2 : 1);
+	if (this->board->in_board(new_pos[0], new_pos[1])
+			&& (to_move = this->board->case_occupee(new_pos[0], new_pos[1]))
+			&& (to_move->get_piece()->get_color() == color))
 	{
-		new_pos[1] = str[i++] - 'a';
-		if (ft_btw(str[i] - '0', 1, (this->board)->get_taille()))
-		{
-			new_pos[0] = str[i++] - '1';
-			if (this->board->can_play(new_pos[0], new_pos[1], color))
-			{
-				to_move = this->board->case_occupee(new_pos[0], new_pos[1]);
-				if (str[i++] != '-')
-					return (0);
-				if (ft_btw(str[i] - 'a', 0, (this->board)->get_taille() - 1))
-				{
-					new_pos[1]  = str[i++] - 'a';
-					if (ft_btw(str[i] - '0', 1, (this->board)->get_taille()))
-					{
-						new_pos[0]  = str[i++] - '1';
-						if ((this->get_board())->move(to_move, new_pos))
-							return (1);
-					}
-				}
-			}
-		}
+		if (str[i++] != '-')
+			return (0);
+		new_pos[1]  = str[i++] - 'a';
+		new_pos[0] = atoi(str.substr(i++).c_str()) - 1;
+		if (this->board->in_board(new_pos[0], new_pos[1])
+			&& this->move(to_move, new_pos))
+			return (1);
 	}
-	return(0);
+	return (0);
 }
+
+
+int			GAME::move(MAILLON *to_move, int *new_position)
+{
+	int		j;
+	PIECE	*piece {to_move->get_piece()};
+
+	j = piece->is_legit(new_position);
+	if (j != 0)
+	{
+		if (!(piece->get_status()))
+			piece->set_status(1);
+		if (!(j % 2))
+			this->get_board()->remove(new_position);
+		piece->set_position(new_position);
+		if (j > 2)	
+			piece->transform(1);
+		std::cout << "how" << std::endl;
+		this->update_moves();
+	}
+	return (j);
+}
+
+
+void		GAME::update_moves()
+{
+	MAILLON		*voyager	{*this->board->get_listePieces()};
+	PIECE		*piece;
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		piece->get_type()->moves(this->board, piece);
+		voyager = voyager->get_next();
+	}
+}
+
+
+void		GAME::display_moves()
+{
+	MAILLON		*voyager	{*this->board->get_listePieces()};
+	PIECE		*piece;
+	int			color		{this->status == STATUS::white_turn ? 1 : -1};
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color)
+			piece->display_moves();
+		voyager = voyager->get_next();
+	}
+}
+
 
 
 /* Initialisation de la liste chainee des differents types de pieces
@@ -106,10 +151,10 @@ static void	Dame_type_setup(TYPE **list_start)
 	TYPE	*b_pawn;
 	TYPE	*b_queen;
 
-	b_queen = new TYPE(&queen_move_legit, -1, "Q", 0);
-	b_pawn = new TYPE(&pawn_move_legit, -1, "O", b_queen);
-	w_queen = new TYPE(&queen_move_legit, 1, "Q", b_pawn);
-	*list_start = new TYPE(&pawn_move_legit, 1, "O", w_queen);
+	b_queen = new TYPE(&Dame_queen_move, -1, "Q", 0);
+	b_pawn = new TYPE(&Dame_pawn_move, -1, "O", b_queen);
+	w_queen = new TYPE(&Dame_queen_move, 1, "Q", b_pawn);
+	*list_start = new TYPE(&Dame_pawn_move, 1, "O", w_queen);
 }
 
 /*Attention, la fonction suivante utilise un codage logique des cases
@@ -172,21 +217,22 @@ void		Echec_type_setup(TYPE **w_king)
 	TYPE	*b_rook;
 	TYPE	*b_queen;
 
-	b_queen = new TYPE(&queen_move_legit, -1, "Q", 0);
-	b_rook = new TYPE(&queen_move_legit, -1, "T", b_queen);
-	b_knight = new TYPE(&queen_move_legit, -1, "C", b_rook);
-	b_bishop = new TYPE(&queen_move_legit, -1, "F", b_knight);
-	b_pawn = new TYPE(&queen_move_legit, -1, "o", b_bishop);
-	b_king = new TYPE(&queen_move_legit, -1, "W", b_pawn);
-	w_queen = new TYPE(&queen_move_legit, 1, "Q", b_king);
-	w_rook = new TYPE(&queen_move_legit, 1, "T", w_queen);
-	w_knight = new TYPE(&queen_move_legit, 1, "C", w_rook);
-	w_bishop = new TYPE(&queen_move_legit, 1, "F", w_knight);
-	w_pawn = new TYPE(&queen_move_legit, 1, "o", w_bishop);
-	*w_king = new TYPE(&queen_move_legit, 1, "W", w_pawn);
+	b_queen = new TYPE(&Echec_queen_move, -1, "Q", 0);
+	b_rook = new TYPE(&rook_move, -1, "T", b_queen);
+	b_knight = new TYPE(&knight_move, -1, "C", b_rook);
+	b_bishop = new TYPE(&bishop_move, -1, "F", b_knight);
+	b_pawn = new TYPE(&Echec_pawn_move, -1, "o", b_bishop);
+	b_king = new TYPE(&Echec_king_move, -1, "W", b_pawn);
+	w_queen = new TYPE(&Echec_queen_move, 1, "Q", b_king);
+	w_rook = new TYPE(&rook_move, 1, "T", w_queen);
+	w_knight = new TYPE(&knight_move, 1, "C", w_rook);
+	w_bishop = new TYPE(&bishop_move, 1, "F", w_knight);
+	w_pawn = new TYPE(&Echec_pawn_move, 1, "o", w_bishop);
+	*w_king = new TYPE(&Echec_king_move, 1, "W", w_pawn);
 }
 
-MAILLON		**Echec_set_up(void)
+
+MAILLON		**Echec_setup(void)
 {
 	TYPE				*w_king;
 	MAILLON				**list;
