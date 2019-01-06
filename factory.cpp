@@ -47,6 +47,8 @@ GAME		*FACTORY::create(std::string str)
 {
 	if (!(str.compare("Echec")))
 		return (new GAME_Echec());
+	if (!(str.compare("Dame_v.Anglaise")))
+		return (new GAME_Dame_Angl);
 	return (new GAME_Dame());
 }
 

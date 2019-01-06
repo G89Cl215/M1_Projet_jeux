@@ -12,23 +12,22 @@
  */
 
 
-GAME_Dame::GAME_Dame() : GAME((new BOARD(10, this->set_up())), STATUS::white_turn)
+GAME_Dame_Angl::GAME_Dame_Angl() : GAME((new BOARD(8, this->set_up())), STATUS::white_turn)
 {
 	this->update_moves();
 	this->display_status();
 }
 
-
-void		GAME_Dame::type_setup(TYPE **list_start)
+void		GAME_Dame_Angl::type_setup(TYPE **list_start)
 {
 	TYPE	*w_queen;
 	TYPE	*b_pawn;
 	TYPE	*b_queen;
 
-	b_queen = new TYPE(&Dame_queen_move, -1, "Q", 0);
-	b_pawn = new TYPE(&Dame_pawn_move, -1, "O", b_queen);
-	w_queen = new TYPE(&Dame_queen_move, 1, "Q", b_pawn);
-	*list_start = new TYPE(&Dame_pawn_move, 1, "O", w_queen);
+	b_queen = new TYPE(&Dame_Angl_queen_move, -1, "Q", 0);
+	b_pawn = new TYPE(&Dame_Angl_pawn_move, -1, "o", b_queen);
+	w_queen = new TYPE(&Dame_Angl_queen_move, 1, "Q", b_pawn);
+	*list_start = new TYPE(&Dame_Angl_pawn_move, 1, "o", w_queen);
 }
 
 /*Attention, la fonction suivante utilise un codage logique des cases
@@ -39,16 +38,16 @@ void		GAME_Dame::type_setup(TYPE **list_start)
  */
 
 
-static int	*Dame_set_pos(int i)
+static int	*Dame_Angl_set_pos(int i)
 {
-	int		*pos	{new int[2]};
+	int		*pos = new int[2];
 
-	pos[0] = i / 5 + 2 * (i / 20);
-	pos[1] = 2 * (i % 5) + (i / 5) % 2;
+	pos[0] = i / 4 + 2 * (i / 12);
+	pos[1] = 2 * (i % 4) + (i / 4) % 2;
 	return (pos);
 }
 
-MAILLON		**GAME_Dame::set_up()
+MAILLON		**GAME_Dame_Angl::set_up()
 {
 	TYPE	*w_pawn;
 	MAILLON	**list;
@@ -57,19 +56,18 @@ MAILLON		**GAME_Dame::set_up()
 	int		i		{1};
 
 	this->type_setup(&w_pawn);
-	piece = new PIECE(w_pawn, Dame_set_pos(0));
+	piece = new PIECE(w_pawn, Dame_Angl_set_pos(0));
 	list = new MAILLON*;
 	*list = new MAILLON(piece);
-	while (i < 40)
+	while (i < 24) 
 	{
-		piece = new PIECE(w_pawn, Dame_set_pos(i));
+		piece = new PIECE(w_pawn, Dame_Angl_set_pos(i));
 		cur_piece = new MAILLON(piece);
 		MAILLON::pushback(list, cur_piece);
 		i++;
-		if (i == 20)
+		if (i == 12)
 			w_pawn = (w_pawn->get_next())->get_next();
 	}
 	return (list);
 }
-
 

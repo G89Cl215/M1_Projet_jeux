@@ -8,10 +8,12 @@ SRCFILE	= status.cpp\
 		  Board.cpp\
 		  game.cpp\
 		  game_Dame.cpp\
+		  game_Dame_Angl.cpp\
 		  game_Echec.cpp\
 		  factory.cpp\
 		  piece.cpp\
 		  piece_echec.cpp\
+		  piece_dame_angl.cpp\
 
 SRCDIR	= .
 SRC		= $(addprefix $(SRCDIR)/,$(SRCFILE))

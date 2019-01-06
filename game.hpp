@@ -49,4 +49,13 @@ class			GAME_Dame : public GAME
 		MAILLON **set_up();
 };
 
+class			GAME_Dame_Angl : public GAME
+{
+	public :
+		GAME_Dame_Angl();
+		void	end_game();
+		void	type_setup(TYPE **w_king);
+		MAILLON **set_up();
+};
+
 #endif

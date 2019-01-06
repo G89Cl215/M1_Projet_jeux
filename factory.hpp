@@ -9,7 +9,7 @@ class					GAME;
 class					FACTORY
 {
 	public :
-		static const int			NB_GAME				{2};
+		static const int			NB_GAME				{3};
 		static const std::string	GAME_NAME[NB_GAME];
 		static GAME					*init();
 		static GAME					*create(std::string str);

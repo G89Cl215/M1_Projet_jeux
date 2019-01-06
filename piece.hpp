@@ -36,6 +36,9 @@ class	PIECE
 void	Dame_pawn_move(BOARD *board, PIECE *piece);
 void	Dame_queen_move(BOARD *board, PIECE *piece);
 
+void	Dame_Angl_pawn_move(BOARD *board, PIECE *piece);
+void	Dame_Angl_queen_move(BOARD *board, PIECE *piece);
+
 void	Echec_pawn_move(BOARD *board, PIECE *piece);
 void	Echec_queen_move(BOARD *board, PIECE *piece);
 void	Echec_king_move(BOARD *board, PIECE *piece);

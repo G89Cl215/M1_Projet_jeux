@@ -4,7 +4,7 @@
 #include "game.hpp"
 #include "Board.hpp"
 
-const std::string	FACTORY::GAME_NAME[NB_GAME] {"Dame", "Echec"};
+const std::string	FACTORY::GAME_NAME[NB_GAME] {"Dame", "Dame_v.Anglaise", "Echec"};
 
 int				main()
 {
