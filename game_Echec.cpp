@@ -13,6 +13,25 @@ GAME_Echec::GAME_Echec() : GAME(new BOARD(8, this->set_up()), STATUS::white_turn
 	this->display_status();
 }
 
+int			GAME_Echec::move(MAILLON *to_move, int *new_position)
+{
+	PIECE	*piece	{to_move->get_piece()};
+	int		j		{piece->is_legit(new_position)};
+
+	if (j)
+	{
+		if (!(piece->get_status()))
+			piece->set_status(1);
+		if (!(j % 2))
+			this->get_board()->remove(new_position);
+		piece->set_position(new_position);
+		if (j > 2)	
+			piece->transform(1);
+		this->update_moves();
+	}
+	return (j);
+}
+
 
 void		GAME_Echec::type_setup(TYPE **w_king)
 {
@@ -165,4 +184,9 @@ MAILLON		**GAME_Echec::set_up()
 	cur_piece = new MAILLON(piece);
 	MAILLON::pushback(list, cur_piece);
 	return (list);
+}
+
+GAME_Echec::~GAME_Echec()
+{
+	delete this->board;
 }

@@ -38,10 +38,8 @@ void		BOARD::remove(int *pos)
 {
 	MAILLON	*a_retirer;
 
-	std::cout << "hello" << std::endl;
 	if ((a_retirer = (*(this->in_game))->search(pos[0], pos[1])))
 	{
-		std::cout << "world" << std::endl;
 		delete (a_retirer->get_piece());
 		*a_retirer = *(a_retirer->get_next());
 	}

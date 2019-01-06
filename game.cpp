@@ -71,28 +71,6 @@ int			GAME::parsing(std::string str)
 }
 
 
-int			GAME::move(MAILLON *to_move, int *new_position)
-{
-	int		j;
-	PIECE	*piece {to_move->get_piece()};
-
-	j = piece->is_legit(new_position);
-	if (j != 0)
-	{
-		if (!(piece->get_status()))
-			piece->set_status(1);
-		if (!(j % 2))
-			this->get_board()->remove(new_position);
-		piece->set_position(new_position);
-		if (j > 2)	
-			piece->transform(1);
-		std::cout << "how" << std::endl;
-		this->update_moves();
-	}
-	return (j);
-}
-
-
 void		GAME::update_moves()
 {
 	MAILLON		*voyager	{*this->board->get_listePieces()};
@@ -124,5 +102,4 @@ void		GAME::display_moves()
 
 GAME::~GAME()
 {
-	delete this->board;
 }

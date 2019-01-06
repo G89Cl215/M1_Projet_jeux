@@ -84,7 +84,7 @@ int		FACTORY::parsing(GAME *game, std::string str)
 {
 	if (!(str.compare("Status")))
 		game->display_status();
-	if (!(str.compare("New_game")))
+	else if (!(str.compare("New_game")))
 	{
 		std::cout << "	*  Abandon de la partie" << std::endl;
 		std::cout << "	*  Etes-vous sur ? (O/N)" << std::endl;

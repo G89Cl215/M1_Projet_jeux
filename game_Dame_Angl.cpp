@@ -71,3 +71,101 @@ MAILLON		**GAME_Dame_Angl::set_up()
 	return (list);
 }
 
+
+int		GAME_Dame_Angl::must_take()
+{
+	int											take_power	{0};
+	int											color		{this->status == STATUS::white_turn ? 1 : -1};
+	MAILLON										*voyager	{*this->board->get_listePieces()};
+	PIECE										*piece;
+	std::vector<std::vector<int>>				moves;
+	std::vector<std::vector<int>>::iterator		it;
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color)
+		{
+			moves = piece->get_moves();
+			it = moves.begin();
+			while (it < moves.end())
+			{
+				if ((*it)[2] > take_power)
+					take_power = (*it)[2];
+				it++;
+			}
+		}
+		voyager = voyager->get_next();
+	}
+	return (take_power);
+}
+
+int		GAME_Dame_Angl::can_take(PIECE *piece)
+{
+	int											take_power	{0};
+	std::vector<std::vector<int>>				moves		{piece->get_moves()};
+	std::vector<std::vector<int>>::iterator		it			{moves.begin()};
+	
+	while (it < moves.end())
+	{
+		if ((*it)[2] > take_power)
+			take_power = (*it)[2];
+		it++;
+	}
+	return (take_power);
+}
+
+int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
+{
+	PIECE			*piece		{to_move->get_piece()};
+	int				*pos		{piece->get_position()};
+	int				j			{piece->is_legit(new_position)};
+	int				to_remove[2];
+	std::string		str;
+
+	if (j)
+	{
+		std::cout << "j vaut " << j <<  std::endl;
+		if ((j == 1) && (this->must_take() > 1))
+		{
+			std::cout << "Vous pouvez prendre une piece, la prise est obligatoire" << std::endl;
+			return (0);
+		}
+		while (j > 1)
+		{
+			to_remove[0] = (pos[0] + new_position[0]) / 2;
+			to_remove[1] = (pos[1] + new_position[1]) / 2;
+			this->get_board()->remove(to_remove);
+			piece->set_position(new_position);
+			piece->get_type()->moves(this->board, piece);
+			if ((j = this->can_take(piece)) > 1)
+			{
+				this->board->affiche();
+				std::cout << "Possibilite de prise multiple, \
+						entrez une nouvelle case destination prolongeant la prise" << std::endl;
+				std::cin >> str;
+				new_position[1] = str[0] - 'a';
+				new_position[0] = atoi(str.substr(1).c_str()) - 1;
+				while (!(this->board->in_board(new_position[0], new_position[1]))
+								|| !((j = piece->is_legit(new_position) ) > 1))
+				{
+					std::cout << "Cette coordonnee n'est pas valide, veuillez re-iterer" << std::endl;
+					std::cin >> str;
+					new_position[1] = str[0] - 'a';
+					new_position[0] = atoi(str.substr(1).c_str()) - 1;
+				}
+
+			}
+		}
+		piece->set_position(new_position);
+		if (piece->get_type()->get_piece().compare("o")
+					&& (new_position[0] == (piece->get_color() == 1 ? 7 : 0)))
+			piece->transform(1);
+		this->update_moves();
+	}
+	return (1);
+}
+GAME_Dame_Angl::~GAME_Dame_Angl()
+{
+	delete this->board;
+}
