@@ -7,14 +7,16 @@
 
 class			BOARD;
 class			MAILLON;
+class			TYPE;
 
 class			GAME
 {
 	private :
 		BOARD	*board;
 		STATUS	status;
+		
 	public :
-		GAME(std::string game_type);
+		GAME(BOARD *board, STATUS status);
 		~GAME();
 		BOARD	*get_board() const;
 		STATUS	get_status() const;
@@ -25,6 +27,26 @@ class			GAME
 		void	update_moves();
 		void	display_moves();
 		int		parsing(std::string str);
+};
+
+class			GAME_Echec : public GAME
+{
+	public :
+		GAME_Echec();
+		int		is_check(int color);
+		void	end_game();
+		void	type_setup(TYPE **w_king);
+		MAILLON **set_up();
+};
+
+
+class			GAME_Dame : public GAME
+{
+	public :
+		GAME_Dame();
+		void	end_game();
+		void	type_setup(TYPE **w_king);
+		MAILLON **set_up();
 };
 
 #endif

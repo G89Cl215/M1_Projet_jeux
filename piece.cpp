@@ -1,7 +1,7 @@
 #include "piece.hpp"
 #include "type.hpp"
 #include "Board.hpp"
-#include "gen_partie.hpp"
+#include "game.hpp"
 
 #include <iostream>
 

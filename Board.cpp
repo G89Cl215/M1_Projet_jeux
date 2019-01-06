@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gen_partie.hpp"
+#include "game.hpp"
 #include "type.hpp"
 #include "piece.hpp"
 #include "maillon.hpp"

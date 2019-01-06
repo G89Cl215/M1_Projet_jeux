@@ -6,7 +6,10 @@ SRCFILE	= status.cpp\
 		  maillon.cpp\
 		  main.cpp\
 		  Board.cpp\
-		  gen_partie.cpp\
+		  game.cpp\
+		  game_Dame.cpp\
+		  game_Echec.cpp\
+		  factory.cpp\
 		  piece.cpp\
 		  piece_echec.cpp\
 
@@ -29,10 +32,10 @@ $(OBJDIR) :
 	@/bin/mkdir $(OBJDIR) 2>/dev/null
 
 clean :
-	@/bin/rm $(OBJ) || true
-	@/bin/rm -R $(OBJDIR) || true
+	@/bin/rm $(OBJ) || true 2>/dev/null
+	@/bin/rm -R $(OBJDIR) || true 2>/dev/null
 
 fclean : clean
-	/bin/rm $(NAME) || true
+	/bin/rm $(NAME) || true 2>/dev/null
 
 re : fclean all
