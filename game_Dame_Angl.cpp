@@ -125,7 +125,6 @@ int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
 
 	if (j)
 	{
-		std::cout << "j vaut " << j <<  std::endl;
 		if ((j == 1) && (this->must_take() > 1))
 		{
 			std::cout << "Vous pouvez prendre une piece, la prise est obligatoire" << std::endl;
@@ -141,8 +140,7 @@ int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
 			if ((j = this->can_take(piece)) > 1)
 			{
 				this->board->affiche();
-				std::cout << "Possibilite de prise multiple, \
-						entrez une nouvelle case destination prolongeant la prise" << std::endl;
+				std::cout << "Possibilite de prise multiple, entrez une nouvelle case destination prolongeant la prise" << std::endl;
 				std::cin >> str;
 				new_position[1] = str[0] - 'a';
 				new_position[0] = atoi(str.substr(1).c_str()) - 1;
@@ -158,12 +156,13 @@ int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
 			}
 		}
 		piece->set_position(new_position);
-		if (piece->get_type()->get_piece().compare("o")
-					&& (new_position[0] == (piece->get_color() == 1 ? 7 : 0)))
+		j = (piece->get_color() == 1 ? 7 : 0);
+		if (!(piece->get_type()->get_piece().compare("o")) && (new_position[0] == j))
 			piece->transform(1);
 		this->update_moves();
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 GAME_Dame_Angl::~GAME_Dame_Angl()
 {
