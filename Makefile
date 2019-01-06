@@ -34,10 +34,10 @@ $(OBJDIR) :
 	@/bin/mkdir $(OBJDIR) 2>/dev/null
 
 clean :
-	@/bin/rm $(OBJ) || true 2>/dev/null
-	@/bin/rm -R $(OBJDIR) || true 2>/dev/null
+	@/bin/rm $(OBJ) 2>/dev/null || true
+	@/bin/rm -R $(OBJDIR) 2>/dev/null || true
 
 fclean : clean
-	/bin/rm $(NAME) || true 2>/dev/null
+	/bin/rm $(NAME) 2>/dev/null || true
 
 re : fclean all
