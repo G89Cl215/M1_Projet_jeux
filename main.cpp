@@ -11,8 +11,8 @@ int				main()
 	std::string		str;
 	GAME			*game;
 	
-	game = FACTORY::init();
-	(game->get_board())->affiche();
+	if (!(game = FACTORY::init()))
+		return (0);
 	std::cin >> str;
 	while (!(FACTORY::message_fin(game, str)))
    	{

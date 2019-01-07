@@ -13,6 +13,7 @@ class					FACTORY
 		static const std::string	GAME_NAME[NB_GAME];
 		static GAME					*init();
 		static GAME					*create(std::string str);
+		static GAME					*new_game(GAME *game);
 		static void					display_commands();
 		static void					possible_moves(GAME *game);
 		static int					parsing(GAME *game, std::string str);

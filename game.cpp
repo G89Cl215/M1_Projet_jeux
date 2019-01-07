@@ -26,6 +26,7 @@ STATUS		GAME::get_status() const
 void		GAME::display_status(void)
 {
 	std::cout << std::endl << "	*  " << this->status << std::endl;
+	this->board->affiche();
 }
 
 

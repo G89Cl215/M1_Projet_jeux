@@ -80,6 +80,12 @@ void	FACTORY::possible_moves(GAME *game)
 	game->display_moves();
 }
 
+GAME	*FACTORY::new_game(GAME *game)
+{
+	delete game ;
+	return (FACTORY::init());
+}
+
 int		FACTORY::parsing(GAME *game, std::string str)
 {
 	if (!(str.compare("Status")))
@@ -90,10 +96,7 @@ int		FACTORY::parsing(GAME *game, std::string str)
 		std::cout << "	*  Etes-vous sur ? (O/N)" << std::endl;
 		std::cin >> str ;
 		if (!(str.compare("O")))
-		{
-			delete game ;
-			game = FACTORY::init();
-		}
+			game = FACTORY::new_game(game);
 	}
 	else if (!(str.compare("Historique")))
 		std::cout << "Historique" << std::endl;
@@ -104,10 +107,7 @@ int		FACTORY::parsing(GAME *game, std::string str)
 	else if (!(str.compare("Help")) || !(str.compare("help")))
 		FACTORY::display_commands();
 	else if (game->parsing(str))
-	{
 		game->change_turn();
-		(game->get_board())->affiche();
-	}
 	else
 		return (0);
 	return (1);
