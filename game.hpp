@@ -29,7 +29,7 @@ class			GAME
 		virtual int		move(MAILLON *to_move, int *new_position) = 0;
 		void			update_moves();
 		virtual void	display_moves();
-		int				parsing(std::string str);
+		int				parsing(std::string str, std::fstream &hist);
 		virtual			~GAME() = 0;
 };
 

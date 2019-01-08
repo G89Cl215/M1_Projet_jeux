@@ -5,6 +5,7 @@
 #include "game.hpp"
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 
 
@@ -46,7 +47,7 @@ void		GAME::change_turn(void)
 }
 
 
-int			GAME::parsing(std::string str)
+int			GAME::parsing(std::string str, std::fstream &hist)
 {
 	MAILLON			*to_move;
 	int				new_pos[2];
@@ -66,7 +67,10 @@ int			GAME::parsing(std::string str)
 		new_pos[0] = atoi(str.substr(i++).c_str()) - 1;
 		if (this->board->in_board(new_pos[0], new_pos[1])
 			&& this->move(to_move, new_pos))
+		{
+			hist << str << std::endl;
 			return (1);
+		}
 	}
 	return (0);
 }

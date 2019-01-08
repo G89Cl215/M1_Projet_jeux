@@ -14,7 +14,7 @@ static int		ft_isgame(std::string str)
 	return (1);
 }
 
-GAME		*FACTORY::init()
+GAME		*FACTORY::init(std::fstream &hist)
 {
 	std::string		str;
 	int				i	{0};
@@ -40,6 +40,7 @@ GAME		*FACTORY::init()
 		std::cout << "Ceci n'est pas un nom de jeu" << std::endl;
 		std::cin >> str;
 	}
+	hist << str << std::endl;
 	return (FACTORY::create(str));
 }
 
@@ -81,33 +82,67 @@ void	FACTORY::possible_moves(GAME *game)
 	game->display_moves();
 }
 
-GAME	*FACTORY::new_game(GAME *game)
+GAME	*FACTORY::new_game(GAME *game, std::fstream &hist)
 {
-	delete game ;
-	return (FACTORY::init());
-}
-
-int		FACTORY::parsing(GAME *game, std::string str)
-{
-	if (!(str.compare("Status")))
-		game->display_status();
-	else if (!(str.compare("New_game")))
+	std::string		str;
+	
+	if (game)
 	{
 		std::cout << "	*  Abandon de la partie" << std::endl;
 		std::cout << "	*  Etes-vous sur ? (O/N)" << std::endl;
 		std::cin >> str ;
 		if (!(str.compare("O")))
-			game = FACTORY::new_game(game);
+		{
+			delete game ;
+			return (FACTORY::init(hist));
+		}
+		return (game);
 	}
+	// ici : Gestion de l'historique sinon les deux vont s'additionner
+	return (FACTORY::init(hist));
+}
+
+void	FACTORY::load_game()
+{
+	std::string		str;
+	
+	std::cout << "	*  Veuillez taper le chemin du fichier historique" << std::endl;
+	std::cout << "	*  le chemin peut etre absolu ou relatif" << std::endl;
+	std::cin >> str;
+}
+
+void	FACTORY::display_history(std::fstream &hist)
+{
+	std::string		str;
+
+	std::cout << "	*  Historique :" << std::endl;
+	hist.clear();
+	hist.seekg(0, std::ios::beg);
+	while (!(hist.eof()))
+	{
+		hist >> str;
+		std::cout << str << std::endl;
+	}
+	hist.clear();
+}
+
+int		FACTORY::parsing(GAME *game, std::string str, std::fstream &hist)
+{
+	if (!(str.compare("Status")))
+		game->display_status();
+	else if (!(str.compare("New_game")))
+		game = FACTORY::new_game(game, hist);
 	else if (!(str.compare("Historique")))
-		std::cout << "Historique" << std::endl;
+		FACTORY::display_history(hist);
 	else if (!(str.compare("Affiche")))
 		game->get_board()->affiche();
 	else if (!(str.compare("Coups_possibles")))
 		FACTORY::possible_moves(game);
+	else if (!(str.compare("Charge_partie")))
+		FACTORY::load_game();
 	else if (!(str.compare("Help")) || !(str.compare("help")))
 		FACTORY::display_commands();
-	else if (game->parsing(str))
+	else if (game->parsing(str, hist))
 		game->change_turn();
 	else
 		return (0);
