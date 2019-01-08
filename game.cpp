@@ -96,7 +96,7 @@ void		GAME::display_moves()
 	{
 		piece = voyager->get_piece();
 		if (piece->get_color() == color)
-			piece->display_moves();
+			piece->display_moves(0);
 		voyager = voyager->get_next();
 	}
 }

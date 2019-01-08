@@ -66,6 +66,7 @@ void		FACTORY::display_commands()
 		std::cout << std::endl << "D'autres commandes sont dsiponibles" << std::endl;
 		std::cout << "	*  Les commandes disponibles sont :" << std::endl;
 		std::cout << "	*		Status" << std::endl;
+		std::cout << "	*		Affiche" << std::endl;
 		std::cout << "	*		New_game" << std::endl;
 		std::cout << "	*		Historique" << std::endl;
 		std::cout << "	*		Coups_possibles" << std::endl;
@@ -115,13 +116,11 @@ int		FACTORY::parsing(GAME *game, std::string str)
 
 int		FACTORY::message_fin(GAME *game, std::string str)
 {
-	if (!(str.compare("resign")) || !(str.compare("quit")))
-	{
-
-//		game.ft_game_end();
-//		liberation de toute memoire allouee
+	if (!(str.compare("resign")))
+		game->set_status(game->get_status() == STATUS::white_turn ?
+						STATUS::black_win : STATUS::white_win);
+	if (!(str.compare("quit")))
 		return (1);
-	}
 	else if (game->get_status() != STATUS::white_turn
 					&& game->get_status() != STATUS::black_turn)
 	{
@@ -130,5 +129,3 @@ int		FACTORY::message_fin(GAME *game, std::string str)
 	}
 	return (0);
 }
-
-

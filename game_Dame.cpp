@@ -86,12 +86,10 @@ int		GAME_Dame::must_take()
 		piece = voyager->get_piece();
 		if (piece->get_color() == color)
 		{
-			std::cout << "je suis passe par la" << std::endl;
 			moves = piece->get_moves();
 			it = moves.begin();
 			while (it < moves.end())
 			{
-				std::cout << take_power << std::endl;
 				if ((*it)[2] > take_power)
 					take_power = (*it)[2];
 				it++;
@@ -117,6 +115,21 @@ int		GAME_Dame::can_take(PIECE *piece)
 	return (take_power);
 }
 
+void		GAME_Dame::display_moves()
+{
+	MAILLON		*voyager	{*this->board->get_listePieces()};
+	PIECE		*piece;
+	int			color		{this->status == STATUS::white_turn ? 1 : -1};
+	int			take_power	{this->must_take()};
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color && this->can_take(piece) == take_power)
+			piece->display_moves(take_power);
+		voyager = voyager->get_next();
+	}
+}
 
 int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 {
@@ -128,7 +141,6 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 
 	if (j)
 	{
-		std::cout << "j vaut " << j <<  std::endl;
 		if ((j == 1) && (this->must_take() > 1))
 		{
 			std::cout << "Vous pouvez prendre une piece, la prise est obligatoire" << std::endl;

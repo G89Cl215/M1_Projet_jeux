@@ -119,7 +119,7 @@ void		BOARD::affiche()
 	while (l-- > 0)
 	{
 		c = 0;
-		cout <<"  " << l + 1 << "	"; 
+		cout << "  " << l + 1 << "	"; 
 		while (c < this->get_taille())
 		{
 			cout<< "| ";

@@ -28,7 +28,7 @@ class			GAME
 		void			change_turn();
 		virtual int		move(MAILLON *to_move, int *new_position) = 0;
 		void			update_moves();
-		void			display_moves();
+		virtual void	display_moves();
 		int				parsing(std::string str);
 		virtual			~GAME() = 0;
 };
@@ -41,6 +41,8 @@ class			GAME_Echec : public GAME
 		void		type_setup(TYPE **w_king);
 		MAILLON		**set_up();
 		int			move(MAILLON *to_move, int *new_position);
+		int			is_check();
+		void		transform(PIECE *piece);
 		void		end_game();
 		~GAME_Echec();
 };
@@ -55,6 +57,7 @@ class			GAME_Dame : public GAME
 		int			move(MAILLON *to_move, int *new_position);
 		int			must_take();
 		int			can_take(PIECE *piece);
+		void		display_moves();
 		void		end_game();
 		~GAME_Dame();
 };
@@ -68,6 +71,7 @@ class			GAME_Dame_Angl : public GAME
 		int			move(MAILLON *to_move, int *new_position);
 		int			must_take();
 		int			can_take(PIECE *piece);
+		void		display_moves();
 		void		end_game();
 		~GAME_Dame_Angl();
 };

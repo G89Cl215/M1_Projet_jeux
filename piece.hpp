@@ -24,7 +24,7 @@ class	PIECE
 		std::string						color_code() const;
 		std::string						display_piece() const;
 		std::vector<std::vector<int>>	get_moves() const;
-		void							display_moves();
+		void							display_moves(int i);
 		void							set_legit(std::vector<std::vector<int>> list);
 		int								is_legit(int *new_pos);
 		void							set_position(int *position_new);

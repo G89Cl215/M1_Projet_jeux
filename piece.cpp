@@ -68,7 +68,7 @@ std::vector<std::vector<int>>	PIECE::get_moves() const
 }
 
 
-void							PIECE::display_moves()
+void							PIECE::display_moves(int i)
 {
 	std::vector<std::vector<int>>			moves	{this->possible_moves};
 	std::vector<std::vector<int>>::iterator	it		{moves.begin()};
@@ -78,7 +78,8 @@ void							PIECE::display_moves()
 		std::cout << "La piece en " << (char)(this->position[1] + 'a') << " " << this->position[0] + 1 << " peut bouger en : " << std::endl;
 		while (it < moves.end())
 		{
-			std::cout << (char)((*it)[1] + 'a') << " " << (*it)[0] + 1 << "	";
+			if ((*it)[2] >= i)
+				std::cout << (char)((*it)[1] + 'a') << " " << (*it)[0] + 1 << "	";
 			it++;
 		}
 		std::cout << std::endl;

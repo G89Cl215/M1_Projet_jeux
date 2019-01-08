@@ -13,10 +13,54 @@ GAME_Echec::GAME_Echec() : GAME(new BOARD(8, this->set_up()), STATUS::white_turn
 	this->display_status();
 }
 
+void		GAME_Echec::transform(PIECE *piece)
+{
+	std::string		str;
+
+	std::cout << "Votre pion peut etre promu" << std::endl;
+	std::cout << "Choisissez parmis les pieces suivantes :" << std::endl;
+	std::cout << "Fou" << std::endl;
+	std::cout << "Cavalier" << std::endl;
+	std::cout << "Tour" << std::endl;
+	std::cout << "Dame" << std::endl;
+	std::cin >> str;
+	while (1)
+	{
+		if (!(str.compare("Fou")))
+		{
+			piece->transform(1);
+			break ;
+		}
+		else if (!(str.compare("Cavalier")))
+		{
+			piece->transform(2);
+			break ;
+		}
+		else if (!(str.compare("Tour")))
+		{
+			piece->transform(3);
+			break ;
+		}
+		else if (!(str.compare("Dame")))
+		{
+			piece->transform(4);
+			break ;
+		}
+		else
+			std::cin >> str;
+	}
+}
+
+int			is_check()
+{
+return (0);
+}
+
 int			GAME_Echec::move(MAILLON *to_move, int *new_position)
 {
 	PIECE	*piece	{to_move->get_piece()};
 	int		j		{piece->is_legit(new_position)};
+	int				{piece->is_legit(new_position)};
 
 	if (j)
 	{
@@ -26,7 +70,7 @@ int			GAME_Echec::move(MAILLON *to_move, int *new_position)
 			this->get_board()->remove(new_position);
 		piece->set_position(new_position);
 		if (j > 2)	
-			piece->transform(1);
+			this->transform(piece);
 		this->update_moves();
 	}
 	return (j);

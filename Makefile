@@ -22,16 +22,21 @@ OBJDIR	= obj
 OBJFILE	= $(SRCFILE:.cpp=.o)
 OBJ		= $(addprefix $(OBJDIR)/,$(OBJFILE))
 
-NAME	= Jeu_de_dames
+HISTDIR	= Historique
+
+NAME	= Game_factory
 
 all : $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 
-$(OBJDIR)/%.o : %.cpp | $(OBJDIR)
+$(OBJDIR)/%.o : %.cpp | $(HISTDIR) $(OBJDIR)
 		$(CC) $(CFLAGS) -o $@ -c $< -I $(HDR)
 
 $(OBJDIR) :
 	@/bin/mkdir $(OBJDIR) 2>/dev/null
+
+$(HISTDIR) :
+	@/bin/mkdir $(HISTDIR) 2>/dev/null
 
 clean :
 	@/bin/rm $(OBJ) 2>/dev/null || true

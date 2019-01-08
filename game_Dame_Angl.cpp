@@ -71,6 +71,22 @@ MAILLON		**GAME_Dame_Angl::set_up()
 	return (list);
 }
 
+void		GAME_Dame_Angl::display_moves()
+{
+	MAILLON		*voyager	{*this->board->get_listePieces()};
+	PIECE		*piece;
+	int			color		{this->status == STATUS::white_turn ? 1 : -1};
+	int			take_power	{this->must_take()};
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color && this->can_take(piece) == take_power)
+			piece->display_moves(take_power);
+		voyager = voyager->get_next();
+	}
+}
+
 
 int		GAME_Dame_Angl::must_take()
 {
@@ -157,13 +173,29 @@ int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
 		}
 		piece->set_position(new_position);
 		j = (piece->get_color() == 1 ? 7 : 0);
-		if (!(piece->get_type()->get_piece().compare("o")) && (new_position[0] == j))
+		if (!(piece->get_type()->get_piece().compare("o"))
+				&& (new_position[0] == j))
 			piece->transform(1);
 		this->update_moves();
+		this->end_game();
 		return (1);
 	}
 	return (0);
 }
+
+void		GAME_Dame_Angl::end_game()
+{
+	
+	int		color	{this->status == STATUS::white_turn ? 1 : -1};
+
+	if (!(this->must_take()))
+	{
+		this->set_status(color == 1 ? STATUS::black_win : STATUS::white_win);
+		delete this ;
+	}
+}
+
+
 GAME_Dame_Angl::~GAME_Dame_Angl()
 {
 	delete this->board;
