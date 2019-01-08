@@ -15,7 +15,6 @@
 GAME_Dame::GAME_Dame() : GAME((new BOARD(10, this->set_up())), STATUS::white_turn)
 {
 	this->update_moves();
-	this->display_status();
 }
 
 

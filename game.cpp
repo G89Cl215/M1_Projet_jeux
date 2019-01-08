@@ -43,7 +43,6 @@ void		GAME::change_turn(void)
 		this->set_status(STATUS::black_turn);
 	else if (this->status == STATUS::black_turn)
 		this->set_status(STATUS::white_turn);
-	this->display_status();
 }
 
 

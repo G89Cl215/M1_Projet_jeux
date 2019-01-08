@@ -15,7 +15,6 @@
 GAME_Dame_Angl::GAME_Dame_Angl() : GAME((new BOARD(8, this->set_up())), STATUS::white_turn)
 {
 	this->update_moves();
-	this->display_status();
 }
 
 void		GAME_Dame_Angl::type_setup(TYPE **list_start)

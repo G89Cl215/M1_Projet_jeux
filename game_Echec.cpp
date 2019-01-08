@@ -10,7 +10,6 @@
 GAME_Echec::GAME_Echec() : GAME(new BOARD(8, this->set_up()), STATUS::white_turn)
 {
 	this->update_moves();
-	this->display_status();
 }
 
 void		GAME_Echec::transform(PIECE *piece)

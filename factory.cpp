@@ -19,12 +19,12 @@ GAME		*FACTORY::init(std::fstream &hist)
 	std::string		str;
 	int				i	{0};
 
-	std::cout << "	===          BIENVENUE            ===" << std::endl;
-	std::cout << "	*  Auteurs :  Thomas MORNARD,       *" << std::endl;
-	std::cout << "	*             Thomas GOUEDARD       *" << std::endl;
-	std::cout << "	*  La fabrique de jeu est prete,    *" << std::endl;
-	std::cout << "	*  Ce programme vous fera jouer     *" << std::endl;
-	std::cout << "	*  Les variantes supportees sont :  *" << std::endl;
+	std::cout << "	===           BIENVENUE             ===" << std::endl;
+	std::cout << "	*  Auteurs :  Thomas MORNARD,         *" << std::endl;
+	std::cout << "	*             Thomas GOUEDARD         *" << std::endl;
+	std::cout << "	*  La fabrique de jeu est prete,      *" << std::endl;
+	std::cout << "	*  Ce programme vous fera jouer       *" << std::endl;
+	std::cout << "	*  Les variantes supportees sont :    *" << std::endl;
 	while (i < FACTORY::NB_GAME)
 	{
 		std::cout <<"	*       " << FACTORY::GAME_NAME[i] << std::endl;
@@ -44,12 +44,47 @@ GAME		*FACTORY::init(std::fstream &hist)
 	return (FACTORY::create(str));
 }
 
+GAME		*FACTORY::init(std::ifstream &to_load, std::fstream &hist)
+{
+	std::string		str;
+	GAME			*game;
+
+	std::cout << "	===           BIENVENUE             ===" << std::endl;
+	std::cout << "	*  Auteurs :  Thomas MORNARD,         *" << std::endl;
+	std::cout << "	*             Thomas GOUEDARD         *" << std::endl;
+	std::cout << "	*  La fabrique de jeu est prete,      *" << std::endl;
+	std::cout << "	*  Vous avez choisi de charger        *" << std::endl;
+	std::cout << "	*       une partie via un historique  *" << std::endl;
+	std::cout << "	===                                 ===" << std::endl;
+
+	to_load >> str;
+	if (!(ft_isgame(str)))
+	{
+		std::cout << "	*  Le fichier charge est non conforme *" << std::endl;
+		std::cout << "	*  Il ne debute pas par un jeu connu  *"<< std::endl;
+		std::cout << "	*          Reprise Manuelle           *" << std::endl << std::endl <<std::endl;
+		return (0);
+	}
+	game = FACTORY::create(str);
+	hist << str << std::endl;
+	std::cout << "Vous jouez a une partie de " << std::endl;
+	std::cout << "	" << str << std::endl;
+	to_load >> str;
+	while (!(to_load.eof()))
+	{
+		if (!(FACTORY::parsing(game, str, hist)))
+			break ;
+		to_load >> str;
+	}
+	return (game);
+}
+
 GAME		*FACTORY::create(std::string str)
 {
 	if (!(str.compare("Echec")))
 		return (new GAME_Echec());
 	if (!(str.compare("Dame_v.Anglaise")))
-		return (new GAME_Dame_Angl);
+		return (new GAME_Dame_Angl());
 	return (new GAME_Dame());
 }
 

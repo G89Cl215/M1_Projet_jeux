@@ -13,6 +13,7 @@ class					FACTORY
 		static const int			NB_GAME				{3};
 		static const std::string	GAME_NAME[NB_GAME];
 		static GAME					*init(std::fstream &hist);
+		static GAME					*init(std::ifstream &to_load, std::fstream &hist);
 		static GAME					*create(std::string str);
 		static GAME					*new_game(GAME *game, std::fstream &hist);
 		static void					load_game();
