@@ -13,6 +13,7 @@ SRCFILE	= status.cpp\
 		  factory.cpp\
 		  piece.cpp\
 		  piece_echec.cpp\
+		  piece_dame.cpp\
 		  piece_dame_angl.cpp\
 
 SRCDIR	= .

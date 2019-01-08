@@ -133,15 +133,3 @@ PIECE::~PIECE()
 	this->possible_moves.clear();
 	delete [] this->position;
 }
-
-void	Dame_pawn_move(BOARD *board, PIECE *piece)
-{
-	(void)board;
-	(void)piece;
-
-}
-void	Dame_queen_move(BOARD *board, PIECE *piece)
-{
-	(void)board;
-	(void)piece;
-}

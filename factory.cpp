@@ -114,15 +114,25 @@ void	FACTORY::load_game()
 void	FACTORY::display_history(std::fstream &hist)
 {
 	std::string		str;
+	int				i	{1};
 
 	std::cout << "	*  Historique :" << std::endl;
 	hist.clear();
 	hist.seekg(0, std::ios::beg);
+	hist >> str;
+	std::cout << "Vous jouez a une partie de " << std::endl;
 	while (!(hist.eof()))
 	{
+		if (!(i % 2))
+			std::cout << i / 2 << ".  ";
+		else
+			std::cout << "	";
+		std::cout << str;
+		if (i++ % 2)
+			std::cout << std::endl;
 		hist >> str;
-		std::cout << str << std::endl;
 	}
+	std::cout << std::endl << std::endl;
 	hist.clear();
 }
 
