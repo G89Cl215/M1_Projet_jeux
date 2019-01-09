@@ -155,20 +155,19 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 			if ((j = this->can_take(piece)) > 1)
 			{
 				this->board->affiche();
-				std::cout << "Possibilite de prise multiple, \
-						entrez une nouvelle case destination prolongeant la prise" << std::endl;
+				std::cout << "	*  Possibilite de prise multiple." << std::endl;
+				std::cout << "	*  Entrez une nouvelle case destination prolongeant la prise" << std::endl;
 				std::cin >> str;
 				new_position[1] = str[0] - 'a';
 				new_position[0] = atoi(str.substr(1).c_str()) - 1;
 				while (!(this->board->in_board(new_position[0], new_position[1]))
-								|| !((j = piece->is_legit(new_position) ) > 1))
+								|| !((j = piece->is_legit(new_position)) > 1))
 				{
 					std::cout << "Cette coordonnee n'est pas valide, veuillez re-iterer" << std::endl;
 					std::cin >> str;
 					new_position[1] = str[0] - 'a';
 					new_position[0] = atoi(str.substr(1).c_str()) - 1;
 				}
-
 			}
 		}
 		piece->set_position(new_position);
@@ -176,8 +175,22 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 					&& (new_position[0] == (piece->get_color() == 1 ? 9 : 0)))
 			piece->transform(1);
 		this->update_moves();
+		this->end_game();
+		return (1);
 	}
-	return (j);
+	return (0);
+}
+
+void		GAME_Dame::end_game()
+{
+	
+	int		color	{this->status == STATUS::white_turn ? 1 : -1};
+
+	if (!(this->must_take()))
+	{
+		this->set_status(color == 1 ? STATUS::black_win : STATUS::white_win);
+		delete this ;
+	}
 }
 
 GAME_Dame::~GAME_Dame()

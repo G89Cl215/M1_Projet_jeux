@@ -27,8 +27,6 @@ void		Dame_queen_move(BOARD *board, PIECE *piece)
 	int								*pos	{piece->get_position()};
 	int								color	{piece->get_color()};
 
-//	if (!(queen_take(board, piece)))
-//	{
 	for (int i : {-1, 1})
 	{
 		for (int j : {-1, 1})
@@ -42,20 +40,28 @@ void		Dame_queen_move(BOARD *board, PIECE *piece)
 			}
 		}
 	}
-//	}
-//	else
-//	{
-		for (int i : {-1, 1})
+	for (int i : {-1, 1})
+	{
+		for (int j : {-1, 1})
 		{
-			for (int j : {-1, 1})
+			distance = 1;
+			while (board->in_board(pos[0] + j * distance, pos[1] + i * distance)
+						&& board->can_play(pos[0] + j * distance, pos[1] + i * distance, color))
 			{
-				if (board->in_board(pos[0] + 2 * j, pos[1] + 2 * i)
-							&& !(board->case_occupee(pos[0] + 2 * j, pos[1] + 2 * i))
-							&& (board->can_take(pos[0] + j, pos[1] + i, color)))
-					list.push_back({pos[0] + 2 * j, pos[1] + 2 * i, 2});
+				if (board->can_take(pos[0] + j * distance, pos[1] + i * distance, color))
+				{
+					distance++;
+					while (!(board->case_occupee(pos[0] + j *distance, pos[1] + i * distance))
+								&& board->in_board(pos[0] + j * distance, pos[1] + i * distance))
+					{
+						list.push_back({pos[0] + j * distance, pos[1] + i * distance, 2});
+						distance++;
+					}
+				}
+				distance++;
 			}
 		}
-//	}
+	}
 	piece->set_legit(list);
 }
 

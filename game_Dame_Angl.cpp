@@ -160,14 +160,13 @@ int			GAME_Dame_Angl::move(MAILLON *to_move, int *new_position)
 				new_position[1] = str[0] - 'a';
 				new_position[0] = atoi(str.substr(1).c_str()) - 1;
 				while (!(this->board->in_board(new_position[0], new_position[1]))
-								|| !((j = piece->is_legit(new_position) ) > 1))
+								|| !((j = piece->is_legit(new_position)) > 1))
 				{
 					std::cout << "Cette coordonnee n'est pas valide, veuillez re-iterer" << std::endl;
 					std::cin >> str;
 					new_position[1] = str[0] - 'a';
 					new_position[0] = atoi(str.substr(1).c_str()) - 1;
 				}
-
 			}
 		}
 		piece->set_position(new_position);

@@ -31,8 +31,8 @@ GAME		*FACTORY::init(std::fstream &hist)
 		std::cout <<"	*       " << FACTORY::GAME_NAME[i] << std::endl;
 		i++;
 	}
-	std::cout << "	*  Veuillez choisir une variante    *" << std::endl;
-	std::cout << "	===                               ===" << std::endl;
+	std::cout << "	*  Veuillez choisir une variante      *" << std::endl;
+	std::cout << "	===                                 ===" << std::endl;
 	std::cin >> str;
 	while (!(ft_isgame(str)) && !(game = FACTORY::parsing(game, str, hist)))
 	{
