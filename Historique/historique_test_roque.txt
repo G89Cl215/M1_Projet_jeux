@@ -1,0 +1,13 @@
+Echec
+e2-e4
+c7-c5
+b1-c3
+b8-c6
+d2-d3
+d7-d5
+c1-f4
+d5-e4
+c3-e4
+e7-e5
+d1-e2
+f7-f6
