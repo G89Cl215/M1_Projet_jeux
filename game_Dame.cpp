@@ -136,6 +136,9 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 	int				*pos		{piece->get_position()};
 	int				j			{piece->is_legit(new_position)};
 	int				to_remove[2];
+	int				c;
+	int				l;
+	int				distance	{0};
 	std::string		str;
 
 	if (j)
@@ -147,9 +150,28 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 		}
 		while (j > 1)
 		{
-			to_remove[0] = (pos[0] + new_position[0]) / 2;
-			to_remove[1] = (pos[1] + new_position[1]) / 2;
-			this->get_board()->remove(to_remove);
+			if (!(piece->get_type()->get_piece().compare("o")))
+			{
+				to_remove[0] = (pos[0] + new_position[0]) / 2;
+				to_remove[1] = (pos[1] + new_position[1]) / 2;
+				this->get_board()->remove(to_remove);
+			}
+			else
+			{
+				l = (pos[0] - new_position[0] > 0) ? -1 : 1;
+				c = (pos[1] - new_position[1] > 0) ? -1 : 1;
+				while (1)
+				{
+					distance++;
+					to_remove[0] = pos[0] + l * distance;
+					to_remove[1] = pos[1] + c * distance;
+					if (this->get_board()->case_occupee(to_remove[0], to_remove[1]))
+					{
+						this->get_board()->remove(to_remove);
+						break ;
+					}
+				}
+			}
 			piece->set_position(new_position);
 			piece->get_type()->moves(this->board, piece);
 			if ((j = this->can_take(piece)) > 1)
@@ -171,7 +193,7 @@ int			GAME_Dame::move(MAILLON *to_move, int *new_position)
 			}
 		}
 		piece->set_position(new_position);
-		if (piece->get_type()->get_piece().compare("o")
+		if (!(piece->get_type()->get_piece().compare("o"))
 					&& (new_position[0] == (piece->get_color() == 1 ? 9 : 0)))
 			piece->transform(1);
 		this->update_moves();
