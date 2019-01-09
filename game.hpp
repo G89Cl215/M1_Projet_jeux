@@ -37,11 +37,12 @@ class			GAME_Echec : public GAME
 {
 	public :
 		GAME_Echec();
-		int			is_check(int color);
 		void		type_setup(TYPE **w_king);
 		MAILLON		**set_up();
 		int			move(MAILLON *to_move, int *new_position);
-		int			is_check();
+		int			get_move(int c, int l, int color);
+		PIECE		*get_king(int color);
+		void		is_check(int flag);
 		void		transform(PIECE *piece);
 		void		end_game();
 		~GAME_Echec();

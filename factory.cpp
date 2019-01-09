@@ -211,9 +211,7 @@ GAME	*FACTORY::parsing(GAME *game, std::string str, std::fstream &hist)
 		FACTORY::display_history(hist);
 	else if (!(str.compare("Affiche")))
 	{
-		if (game)
-			game->get_board()->affiche();
-		else
+		if (!game)
 			std::cout << "	*  Vous n'avez pas encore cree votre partie" << std::endl;
 	}
 	else if (!(str.compare("Coups_possibles")))

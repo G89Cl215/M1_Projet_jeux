@@ -12,6 +12,7 @@ GAME_Echec::GAME_Echec() : GAME(new BOARD(8, this->set_up()), STATUS::white_turn
 	this->update_moves();
 }
 
+	
 void		GAME_Echec::transform(PIECE *piece)
 {
 	std::string		str;
@@ -50,27 +51,117 @@ void		GAME_Echec::transform(PIECE *piece)
 	}
 }
 
-int			is_check()
+int		GAME_Echec::get_move(int c, int l, int color)
 {
-return (0);
+	MAILLON										*voyager	{*this->board->get_listePieces()};
+	PIECE										*piece;
+	std::vector<std::vector<int>>				moves;
+	std::vector<std::vector<int>>::iterator		it;
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color)
+		{
+			moves = piece->get_moves();
+			it = moves.begin();
+			while (it < moves.end())
+			{
+				if ((*it)[0] == c && (*it)[1] == l)
+					return (1);
+				it++;
+			}
+		}
+		voyager = voyager->get_next();
+	}
+	return (0);
+}
+
+PIECE		*GAME_Echec::get_king(int color)
+{
+	MAILLON			*voyager	{*(this->board->get_listePieces())};
+	PIECE			*piece;
+
+	while (voyager)
+	{
+		piece = voyager->get_piece();
+		if (piece->get_color() == color && !(piece->get_type()->get_piece().compare("W")))
+			return (piece);
+		voyager = voyager->get_next();
+	}
+	return (0);
+}
+
+void		GAME_Echec::is_check(int flag)
+{
+	PIECE	*b_king	{this->get_king(-1)};
+	PIECE	*w_king	{this->get_king(1)};
+	int		*w_pos	{w_king->get_position()};
+	int		*b_pos	{b_king->get_position()};
+	
+	if (this->get_move(w_pos[0], w_pos[1], 1))
+	{
+		w_king->set_status(w_king->get_status() + 2);
+		if (flag)
+			std::cout << "	*  White king is in check" <<std::endl;
+	}
+	else if (w_king->get_status() > 1)
+		w_king->set_status(w_king->get_status() - 2);
+
+	if (this->get_move(b_pos[0], b_pos[1], 1))
+	{
+		b_king->set_status(b_king->get_status() + 2);
+		if (flag)
+			std::cout << "	*  Black king is in check" <<std::endl;
+	}
+	else if (b_king->get_status() > 1)
+		b_king->set_status(b_king->get_status() - 2);
 }
 
 int			GAME_Echec::move(MAILLON *to_move, int *new_position)
 {
-	PIECE	*piece	{to_move->get_piece()};
-	int		j		{piece->is_legit(new_position)};
-	int				{piece->is_legit(new_position)};
-
+	int		color		{this->status == STATUS::white_turn ? 1 : -1};
+	PIECE	*king		{this->get_king(color)};
+	PIECE	*piece		{to_move->get_piece()};
+	TYPE	*to_remove;
+	MAILLON	*put_back;
+	int		j			{piece->is_legit(new_position)};
+	int		pos[22];
+			
+	pos[0] = piece->get_position()[0];
+	pos[1] = piece->get_position()[1];
 	if (j)
 	{
+		
 		if (!(piece->get_status()))
 			piece->set_status(1);
 		if (!(j % 2))
-			this->get_board()->remove(new_position);
+		{
+			to_remove = this->board->case_occupee(new_position[0], new_position[1])->get_piece()->get_type();
+			this->board->remove(new_position);
+		}
 		piece->set_position(new_position);
-		if (j > 2)	
-			this->transform(piece);
 		this->update_moves();
+		this->is_check(1);
+		if (king->get_status() > 1)
+		{
+			piece->set_position(pos);
+			if (!(j % 2))
+			{
+				put_back = new MAILLON(new PIECE(to_remove, new_position));
+				MAILLON::pushback(this->board->get_listePieces(), put_back);
+			}
+			this->update_moves();
+			this->is_check(0);
+			this->board->affiche();
+			
+			return(0);
+		}
+		if (j > 2)
+		{
+			this->transform(piece);
+			this->update_moves();
+		}
 	}
 	return (j);
 }
