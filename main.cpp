@@ -11,7 +11,7 @@ const std::string	FACTORY::GAME_NAME[NB_GAME] {"Dame", "Dame_v.Anglaise", "Echec
 int					main(int ac, char **av)
 {
 	std::string		str;
-	GAME			*game;
+	GAME			*game	{0};
 	std::fstream	hist;
 	
 	hist.open("Historique/hist.txt", std::fstream::in | std::fstream::out | std::ios::trunc);

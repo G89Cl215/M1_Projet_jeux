@@ -16,8 +16,9 @@ static int		ft_isgame(std::string str)
 
 GAME		*FACTORY::init(std::fstream &hist)
 {
+	int				i		{0};
+	GAME			*game	{0};
 	std::string		str;
-	int				i	{0};
 
 	std::cout << "	===           BIENVENUE             ===" << std::endl;
 	std::cout << "	*  Auteurs :  Thomas MORNARD,         *" << std::endl;
@@ -33,15 +34,15 @@ GAME		*FACTORY::init(std::fstream &hist)
 	std::cout << "	*  Veuillez choisir une variante    *" << std::endl;
 	std::cout << "	===                               ===" << std::endl;
 	std::cin >> str;
-	while (!(ft_isgame(str)))
+	while (!(ft_isgame(str)) && !(game = FACTORY::parsing(game, str, hist)))
 	{
-		if (!(str.compare("quit")))
+		if (FACTORY::message_fin(0, str))
 			return (0);
 		std::cout << "Ceci n'est pas un nom de jeu" << std::endl;
 		std::cin >> str;
 	}
 	hist << str << std::endl;
-	return (FACTORY::create(str));
+	return (((game) ? game : FACTORY::create(str)));
 }
 
 GAME		*FACTORY::init(std::ifstream &to_load, std::fstream &hist)
@@ -73,7 +74,11 @@ GAME		*FACTORY::init(std::ifstream &to_load, std::fstream &hist)
 	while (!(to_load.eof()))
 	{
 		if (!(FACTORY::parsing(game, str, hist)))
+		{
+			std::cout << "	*  Un des coups, n'est pas valide dans le fichier historique" << std::endl;
+			std::cout << "	*  Reprise de la partie au dernier coup valable. " << std::endl << std::endl;
 			break ;
+		}
 		to_load >> str;
 	}
 	return (game);
@@ -129,21 +134,41 @@ GAME	*FACTORY::new_game(GAME *game, std::fstream &hist)
 		if (!(str.compare("O")))
 		{
 			delete game ;
+			// ici : Gestion de l'historique sinon les deux vont s'additionner
 			return (FACTORY::init(hist));
 		}
 		return (game);
 	}
-	// ici : Gestion de l'historique sinon les deux vont s'additionner
 	return (FACTORY::init(hist));
 }
 
-void	FACTORY::load_game()
+GAME	*FACTORY::load_game(GAME *game, std::fstream &hist)
 {
 	std::string		str;
-	
+
+	if (game)
+	{
+		std::cout << "	*  Abandon de la partie" << std::endl;
+		std::cout << "	*  Etes-vous sur ? (O/N)" << std::endl;
+		std::cin >> str ;
+		if (!(str.compare("O")))
+			delete game ;
+	// ici : Gestion de l'historique sinon les deux vont s'additionner
+	}
 	std::cout << "	*  Veuillez taper le chemin du fichier historique" << std::endl;
 	std::cout << "	*  le chemin peut etre absolu ou relatif" << std::endl;
 	std::cin >> str;
+	std::ifstream to_load(str, std::ios::in);
+	while (!(to_load) && !(FACTORY::message_fin(game, str)))
+	{
+		std::cout << "	*  Saisie incorrecte du fichier historique." <<std::endl;
+		std::cout << "	*  Veuillez reiterer." <<std::endl;
+		std::cin >> str;
+		std::ifstream to_load(str, std::ios::in);
+	}	
+	game = FACTORY::init(to_load, hist);
+	to_load.close();
+	return (game);
 }
 
 void	FACTORY::display_history(std::fstream &hist)
@@ -171,40 +196,65 @@ void	FACTORY::display_history(std::fstream &hist)
 	hist.clear();
 }
 
-int		FACTORY::parsing(GAME *game, std::string str, std::fstream &hist)
+GAME	*FACTORY::parsing(GAME *game, std::string str, std::fstream &hist)
 {
 	if (!(str.compare("Status")))
-		game->display_status();
+	{
+		if	(game)
+			game->display_status();
+		else
+			std::cout << "	*  Vous n'avez pas encore cree votre partie" << std::endl;
+	}
 	else if (!(str.compare("New_game")))
 		game = FACTORY::new_game(game, hist);
 	else if (!(str.compare("Historique")))
 		FACTORY::display_history(hist);
 	else if (!(str.compare("Affiche")))
-		game->get_board()->affiche();
+	{
+		if (game)
+			game->get_board()->affiche();
+		else
+			std::cout << "	*  Vous n'avez pas encore cree votre partie" << std::endl;
+	}
 	else if (!(str.compare("Coups_possibles")))
-		FACTORY::possible_moves(game);
+	{
+		if (game)
+			FACTORY::possible_moves(game);
+		else
+			std::cout << "	*  Vous n'avez pas encore cree votre partie" << std::endl;
+	}
 	else if (!(str.compare("Charge_partie")))
-		FACTORY::load_game();
+		game = FACTORY::load_game(game, hist);
 	else if (!(str.compare("Help")) || !(str.compare("help")))
 		FACTORY::display_commands();
-	else if (game->parsing(str, hist))
+	else if (game && game->parsing(str, hist))
 		game->change_turn();
 	else
 		return (0);
-	return (1);
+	return (game);
 }
 
 int		FACTORY::message_fin(GAME *game, std::string str)
 {
 	if (!(str.compare("resign")))
-		game->set_status(game->get_status() == STATUS::white_turn ?
+	{
+		if (game)
+			game->set_status(game->get_status() == STATUS::white_turn ?
 						STATUS::black_win : STATUS::white_win);
+		else
+		{
+			std::cout << " 	*  Vous essayer d'abandonner avant meme d'avoir commencer ?" << std::endl;
+			std::cout << "	*  C'est triste mais certes... " << std::endl;
+			return (1);
+		}
+	}
 	if (!(str.compare("quit")))
 		return (1);
 	else if (game->get_status() != STATUS::white_turn
 					&& game->get_status() != STATUS::black_turn)
 	{
 		game->display_status();
+		delete game ;
 		return (1);
 	}
 	return (0);

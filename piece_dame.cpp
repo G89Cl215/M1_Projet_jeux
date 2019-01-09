@@ -1,8 +1,6 @@
 #include "piece.hpp"
 #include "Board.hpp"
 
-
-
 /*
 static int	queen_take(BOARD *board, PIECE *piece)
 {
@@ -62,17 +60,18 @@ void		Dame_queen_move(BOARD *board, PIECE *piece)
 }
 
 /*
-static int	pawn_take(BOARD *board, PIECE *piece)
+static int	pawn_take(BOARD *board, int color, std::vector<int> pos, std::vector<int> list)
 {
-	int		color		{piece->get_color()};
-	int		*pos		{piece->get_position()};
-
+	while 
 	for (int i : {-1, 1})
 	{
-		if (board->in_board(pos[0] + 2 * color, pos[1] + 2 * i)
-						&&!(board->case_occupee(pos[0] + 2 * color, pos[1] + 2 * i))
-						&& (board->can_take(pos[0] + color, pos[1] + i, color)))
-			return (1);
+		for (int j : {-1, 1})
+		{
+			if (board->in_board(pos[0] + 2 * j, pos[1] + 2 * i)
+						&&!(board->case_occupee(pos[0] + 2 * j, pos[1] + 2 * i))
+						&& (board->can_take(pos[0] + j, pos[1] + i, color)))
+				return (1);
+		}
 	}
 	return (0);
 }
