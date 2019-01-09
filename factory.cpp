@@ -134,7 +134,8 @@ GAME	*FACTORY::new_game(GAME *game, std::fstream &hist)
 		if (!(str.compare("O")))
 		{
 			delete game ;
-			// ici : Gestion de l'historique sinon les deux vont s'additionner
+			hist.close();
+			hist.open("Historique/hist.txt", std::fstream::in | std::fstream::out | std::ios::trunc);
 			return (FACTORY::init(hist));
 		}
 		return (game);
@@ -152,8 +153,11 @@ GAME	*FACTORY::load_game(GAME *game, std::fstream &hist)
 		std::cout << "	*  Etes-vous sur ? (O/N)" << std::endl;
 		std::cin >> str ;
 		if (!(str.compare("O")))
+		{
 			delete game ;
-	// ici : Gestion de l'historique sinon les deux vont s'additionner
+			hist.close();
+			hist.open("Historique/hist.txt", std::fstream::in | std::fstream::out | std::ios::trunc);
+		}
 	}
 	std::cout << "	*  Veuillez taper le chemin du fichier historique" << std::endl;
 	std::cout << "	*  le chemin peut etre absolu ou relatif" << std::endl;
@@ -248,7 +252,7 @@ int		FACTORY::message_fin(GAME *game, std::string str)
 	}
 	if (!(str.compare("quit")))
 		return (1);
-	else if (game->get_status() != STATUS::white_turn
+	else if (game && game->get_status() != STATUS::white_turn
 					&& game->get_status() != STATUS::black_turn)
 	{
 		game->display_status();
