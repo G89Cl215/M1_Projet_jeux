@@ -121,6 +121,13 @@ void							PIECE::set_position(int *position_new)
 }
 
 
+void							PIECE::set_position(int c, int l)
+{
+	this->position[0] = c;
+	this->position[1] = l;
+}
+
+
 void							PIECE::transform(int i)
 {
 	while (i--)

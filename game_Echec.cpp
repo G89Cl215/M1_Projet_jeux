@@ -123,10 +123,11 @@ int			GAME_Echec::move(MAILLON *to_move, int *new_position)
 	int		color		{this->status == STATUS::white_turn ? 1 : -1};
 	PIECE	*king		{this->get_king(color)};
 	PIECE	*piece		{to_move->get_piece()};
+	PIECE	*rook;
 	TYPE	*to_remove;
 	MAILLON	*put_back;
 	int		j			{piece->is_legit(new_position)};
-	int		pos[22];
+	int		pos[2];
 			
 	pos[0] = piece->get_position()[0];
 	pos[1] = piece->get_position()[1];
@@ -161,9 +162,65 @@ int			GAME_Echec::move(MAILLON *to_move, int *new_position)
 		{
 			this->transform(piece);
 			this->update_moves();
+			this->is_check(1);
 		}
+		return (1);
 	}
-	return (j);
+	else if (!(piece->get_type()->get_piece().compare("W")) && !(piece->get_status())
+				&& new_position[0] == pos[0])
+	{
+		j = pos[1] - new_position[1];
+		if (j == 2 && (put_back = this->board->case_occupee(pos[0], 0))
+						&& !(this->board->case_occupee(pos[0], 1))
+						&& !(this->board->case_occupee(pos[0], 2))
+						&& !(this->board->case_occupee(pos[0], 3)))
+		{
+			rook = put_back->get_piece();
+			if (!(rook->get_status()) && !(rook->get_type()->get_piece().compare("T")))
+			{
+				piece->set_position(pos[0], 3);
+				this->update_moves();
+				this->is_check(1);
+				if (king->get_status() < 1)
+				{
+					piece->set_position(new_position);
+					this->update_moves();
+					this->is_check(1);
+					if (king->get_status() < 1)
+					{	
+						rook->set_position(pos[0], 3);
+						return (1);
+					}
+				}
+				piece->set_position(pos);
+			}
+		}
+		if (j == -2 && (put_back = this->board->case_occupee(pos[0], 7))
+						&& !(this->board->case_occupee(pos[0], 6))
+						&& !(this->board->case_occupee(pos[0], 5)))
+		{
+			rook = put_back->get_piece();
+			if (!(rook->get_status()) && !(rook->get_type()->get_piece().compare("T")))
+			{
+				piece->set_position(pos[0], 5);
+				this->update_moves();
+				this->is_check(1);
+				if (king->get_status() < 1)
+				{
+					piece->set_position(new_position);
+					this->update_moves();
+					this->is_check(1);
+					if (king->get_status() < 1)
+					{	
+						rook->set_position(pos[0], 5);
+						return (1);
+					}
+				}
+				piece->set_position(pos);
+			}
+		}
+	}	
+	return (0);
 }
 
 

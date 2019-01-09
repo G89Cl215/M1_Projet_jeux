@@ -28,6 +28,7 @@ class	PIECE
 		void							set_legit(std::vector<std::vector<int>> list);
 		int								is_legit(int *new_pos);
 		void							set_position(int *position_new);
+		void							set_position(int c, int l);
 		void							set_status(int new_status);
 		void							transform(int n);
 		~PIECE();
